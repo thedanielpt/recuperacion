@@ -2,7 +2,7 @@
 $host='localhost';
 $dbname='practicalmgsi';
 $user='root';
-$pass='';
+$pass='root';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
