@@ -1,0 +1,355 @@
+@font-face {
+    font-family: "Comfortaa";
+    src: url("fonts/comfortaa.ttf") format("truetype");
+}
+
+body {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    height: 100vh;  
+}
+
+header {
+    background-color: #87a7c4;
+    height: 100px;
+    display: flex;
+}
+
+#div_user {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+}
+
+#imagen_user {
+    height: 100%;
+    border-radius: 100%;
+}
+
+#nombre_user {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2%;
+    color: white;
+}
+
+nav {
+    font-family: 'comfortaa';
+    width: 35%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#div_horario {
+    width: 15%;
+    font-family: 'comfortaa';
+}
+
+.ul_nav {
+    display: flex;
+    color: white;
+    justify-content: space-around;
+<<<<<<< HEAD
+    padding-bottom: 10px;
+    font-size: 1.3em;
+=======
+    flex-wrap: wrap;
+    font-size: 2em;
+>>>>>>> 6a01e0ddd7ef8628779ff352f42dd6eca6a4d4b3
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    color: blue;
+}
+
+#logo {
+    width: 20%;
+    background-color: blue;
+}
+
+#div_logo {
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#img_logo {
+    height: 100px;
+}
+
+@media (max-width: 920px){
+    #div_logo {
+        width: 0%;
+        display: none;
+    }
+
+    #div_horario {
+        width: 22%;
+        font-size: 1.2em;
+    }
+
+    nav {
+        width: 58%;
+    }
+}
+
+/* admin_usuarios*/
+
+#div_titulo {   
+    display: flex;
+    justify-content: center;
+    font-size: 1.3em;
+}
+
+#div_enlaces_gestion_usuario {
+    width: 72%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.div_enlaces {
+    width: 30px;
+    display: flex;
+    margin-left: 20%;
+    justify-content: center;
+    margin: 5px;
+    min-width: 100px;
+}
+
+#eliminar_usuario {
+    background-color: rgb(255, 119, 119);
+    margin: 30px;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 15px;
+    height: 20px;
+    width: 70%;
+}
+
+section div div a {
+    text-decoration: none;
+    color: white;
+}
+
+section div div a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+#eliminar_usuario:hover {
+    background-color: darkred;
+    text-decoration: none;
+    color: white;
+}
+
+#anadir {
+    background-color: rgb(45, 178, 57);
+    margin: 30px;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 15px;
+    height: 20px;
+    width: 70%;
+}
+
+#anadir:hover {
+    background-color: rgb(26, 99, 32);
+    color: white;
+}
+
+.modificar {
+    margin: 5px;
+    background-color: rgb(98, 134, 157);
+    border-radius: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    color: white;
+}
+
+.modificar:hover {
+    background-color: rgb(62, 104, 131);
+    color: white;
+}
+
+#div_tabla {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    min-width: 600px;
+}
+
+#tabla_usuarios {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: rgb(35, 77, 105);
+    color: white;
+}
+
+th, td {
+    border: 2px solid black;
+    text-align: center;
+    padding: 3px;
+}
+
+ol {
+    padding-left: 20px;  
+}
+
+/*admin_usuarios_eliminar*/
+
+#eliminar_usuarios {
+    background-color: rgb(255, 119, 119);
+    margin: 10px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+}
+
+#eliminar_usuarios:hover {
+    background-color: red;
+}
+
+/* admin_usuarios_añadir y admin_usuarios_modificar */
+
+#section_crearModificarUser {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 40px;
+    min-width: 350px;
+    background-color: #f4f8ff;
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    justify-content: center;
+}
+
+
+.article_crearModificarUser {
+    width: 90%;
+    background-color: #e1f0ff;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-width: 250px;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 1040px) {
+    .article_crearModificarUser {
+        margin: 0 auto;
+        width: 100%;
+        padding: 20px;
+    }
+}
+
+.article_crearModificarUser:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.div_formulario {
+    font-family: Helvetica, Arial, sans-serif;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.formulario_div {
+    background-color: rgb(228, 237, 246);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.1em;
+}
+
+.formulario_div:hover {
+    background-color: #d1e5f5;
+}
+
+.input_crear {
+    width: 80%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.input_crear:focus {
+    border-color: #8cb2f5;
+    outline: none;
+}
+
+.label_crear_modificar {
+    font-size: 1.1em;
+    color: #4e92c4;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.div_input_crear {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.seleccion {
+    width: 80%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background-color: white;
+    font-size: 16px;
+    margin-left: 10%;
+}
+
+#seleccion_crear:focus {
+    border-color: #8cb2f5;
+    outline: none;
+}
+
+#div_boton_crear {
+    display: flex;
+    justify-content: center;
+}
+
+.boton_crear_modificar {
+    background-color: #4e92c4;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 40%;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.boton_crear_modificar:hover {
+    background-color: #376c91;
+}
+
+.rellenar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

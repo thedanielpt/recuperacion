@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="user.css">
+    <title>Historial de pedidos</title>
+</head>
+<body>
+   <header>
+    <div id="div_user">
+        <img src="img/usuario.jpg" id="imagen_user">
+        <h2 id="nombre_user">Daniel Pamies Teruel</h2>
+     </div>
+
+    <nav>
+        <ul class="ul_nav">
+            <li><a href="inicio_user.html">Inicio</a></li>
+            <li><a href="historial_pedidos.html">Historial de pedidos</a></li>
+        </ul>
+    </nav>
+
+    <div id="div_logo">
+        <img src="img/login-logo.png" id="img_logo">
+    </div>
+</header>   
+
+    <h1>Historial de bocadillos</h1>
+    <div class="formulario"></div>
+        <form method="get">
+            <label for="mes"><strong>Selecciona un mes</label></strong> 
+                <select id="mes">
+                <option disabled selected>Mes</option>
+                <option>Enero</option>
+                <option>Febrero</option>
+                <option>Marzo</option>
+                <option>Abril</option>
+                <option>Mayo</option>
+                <option>Junio</option>
+                <option>Julio</option>
+                <option>Agosto</option>
+                <option>Septiembre</option>
+                <option>Octubre</option>
+                <option>Noviembre</option>
+                <option>Diciembre</option>
+            </select>
+        </form>
+    </div>      
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Bocadillo</th>
+                    <th>Tipo de bocadillo</th>
+                    <th>Fecha</th>
+                    <th>Precio total</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Jamón</td>
+                    <td>Frio</td>
+                    <td>21-01-2025</td>
+                    <td>2,50 €</td>
+                    <td><button class="btn-pendiente">Pendiente</button></td>
+                </tr>
+                <tr>
+                    <td>Queso</td>
+                    <td>Frio</td>
+                    <td>19-01-2025</td>
+                    <td>3 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td>Lomo</td>
+                    <td>Caliente</td>
+                    <td>18-01-2025</td>
+                    <td>2,50 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td>Bacon y huevo</td>
+                    <td>Caliente</td>
+                    <td>17-01-2025</td>
+                    <td>3 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td>Hamburguesa</td>
+                    <td>Frio</td>
+                    <td>15-01-2025</td>
+                    <td>4 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td>Lomo</td>
+                    <td>Frio</td>
+                    <td>15-01-2025</td>
+                    <td>2,50 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td>Jamón</td>
+                    <td>Frio</td>
+                    <td>14-01-2025</td>
+                    <td>2,50 €</td>
+                    <td><button class="btn-retirado">Retirado</button></td>
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                 <td style="font-weight: bold;">Total: 20 €</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>z

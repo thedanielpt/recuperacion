@@ -1,0 +1,78 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url(img/fondo_recu.jpeg) no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.caja {
+    width: 500px;
+    background: #a5cee0;
+    box-sizing: border-box;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.caja img.candado {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h5 {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.caja input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #87a7c4;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.caja input[type="text"] {
+    background: #f9f9f9;
+}
+
+.caja input[type="submit"] {
+    border: none;
+    outline: none;
+    height: 40px;
+    background: #5cb85c;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+.caja input[type="submit"]:hover {
+    background: #4cae4c;
+}
+
+.mensaje-correcto {
+    margin-top: 20px;
+    font-weight: bold;
+    color: green;
+}
+
+.mensaje-error {
+    margin-top: 20px;
+    font-weight: bold;
+    color: red;
+}

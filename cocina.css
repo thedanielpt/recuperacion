@@ -1,0 +1,159 @@
+@font-face {
+    font-family: "Comfortaa";
+    src: url("fonts/comfortaa.ttf") format("truetype");
+}
+
+body {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    height: 100vh;  
+}
+
+header {
+    width: 100%;
+    background-color: #87a7c4;
+    height: 13%;
+    display: flex;
+}
+
+#div_user {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+}
+
+#imagen_user {
+    height: 100%;
+    border-radius: 100%;
+}
+
+#nombre_user {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2%;
+    color: white;
+}
+
+nav {
+    font-family: 'comfortaa';
+    width: 60%;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+ul {
+    display: flex;
+    color: white;
+    justify-content: space-around;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    color: blue;
+}
+
+#logo {
+    width: 20%;
+    background-color: blue;
+}
+
+#div_logo {
+    width: 20%;
+}
+
+#img_logo {
+    width: 100%;
+}
+
+
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+thead{
+    background-color:rgb(120, 168, 120);
+    
+}
+
+tr:nth-child(even){
+    background-color: rgb(197, 190, 190);
+}
+
+th, td {
+    border: 2px solid black;
+    text-align: center;
+    padding: 8px;
+}
+.btn-hecho {
+    background-color: rgb(37, 222, 74);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    font-weight: bold;
+}
+.btn-Pendiente {
+    background-color: rgb(243, 19, 19);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    font-weight: bold;
+}
+
+
+input{
+    padding:10px;
+    border:1px solid #ccc;
+    border: radius 5px;
+    font-size: 16px;
+    margin-right: 10px;
+   
+}
+
+button{
+    padding:10px 20px;
+    background-color: blue;
+    color:#fff;
+    border: radius 5px;
+    cursor: pointer;
+}
+
+.buscador{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    margin-left:75px;
+
+}
+.resumen {
+    width: 90%;
+    margin: 20px auto;
+    border: 1px solid #c8c5c5;
+    padding: 10px;
+}
+.filtros {
+    display: flex;
+    align-items: center;
+    margin: 20px auto;
+
+    width: 90%;
+   
+}
+
+.filtros input,
+.filtros select,
+.filtros button {
+    margin-right: 20px;
+}

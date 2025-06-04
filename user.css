@@ -1,0 +1,256 @@
+@font-face {
+    font-family: "Comfortaa";
+    src: url("fonts/comfortaa.ttf") format("truetype");
+}
+
+body {
+    background-color: white;
+    padding: 0;
+    margin: 0;
+    height: 100vh;  
+}
+
+header {
+    background-color: #87a7c4;
+    height: 100px;
+    display: flex;
+}
+
+#div_user {
+    width: 25%;
+    height: 100%;
+    display: flex;
+    text-align: center;
+}
+
+#imagen_user {
+    height: 100%;
+    border-radius: 100%;
+}
+
+#nombre_user {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2%;
+    color: white;
+}
+
+nav {
+    font-family: 'comfortaa';
+    width: 45%;
+    text-align: center;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+#div_horario {
+    width: 15%;
+    font-family: 'comfortaa';
+}
+
+.ul_nav {
+    display: flex;
+    color: white;
+    justify-content: space-around;
+    padding-bottom: 10px;
+    font-size: 1.3em;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    color: blue;
+}
+
+#logo {
+    width: 20%;
+    background-color: blue;
+}
+
+#div_logo {
+    width: 20%;
+}
+
+#img_logo {
+    width: 100%;
+    height: 100px;
+}
+
+@media (max-width: 920px){
+    #div_logo {
+        width: 0%;
+        display: none;
+    }
+
+    #div_horario {
+        width: 22%;
+        font-size: 1.2em;
+    }
+
+    nav {
+        width: 58%;
+    }
+}
+
+/*inicio_user*/
+
+article {
+    margin: auto;
+    margin-top: 2%;
+    background-color: rgb(57, 98, 135);
+    width: 80%;
+    min-width: 400px;
+    border-radius: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+}
+
+section {
+    background-color: rgb(90, 128, 162);
+    width: 40%;
+    border-radius: 30px;
+    margin: 1.6em;
+    padding: 10px;
+    min-width: 300px;
+}
+
+.section_div_img {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.img_bocatas {
+    width: 100%;
+    border-radius: 30px;
+    margin-top: 10px;
+}
+
+ul {
+    display: flex;
+    color: white;
+    justify-content: space-around;
+    padding-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.titulo_bocata {
+    color: white;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.div_descripcion {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+}
+
+h3 {
+    margin-left: 20px;
+    color: black;
+    font-size: 1.4em;
+    font-family: "Times New Roman", Times, serif;
+    margin-top: 5px;
+}
+
+.div_boton {
+    width: 30%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.boton_bocatas_pedir {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+}
+
+.boton_bocatas_pedir:hover {
+    background-color: rgb(59, 101, 138);
+    color: white;
+}
+
+.boton_bocatas_retirar {
+    width: 100%;
+    background-color: rgb(245, 111, 111);
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+}
+
+.boton_bocatas_retirar:hover {
+    background-color: red;
+    color: white;
+}
+
+/*historial_pedidos*/
+
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+thead{
+    background-color: rgb(148, 123, 176);
+}
+
+tr:nth-child(even){
+    background-color: rgb(181, 180, 180);
+}
+
+th, td {
+    border: 2px solid black;
+    text-align: center;
+    padding: 8px;
+}
+
+.btn-pendiente {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    font-weight: bold;
+}
+
+
+.btn-retirado {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    font-weight: bold;
+}
+
+form{
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 20px;
+    gap:10px;
+}
+
+#div_total {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#total {
+    margin-right: 27%;
+}

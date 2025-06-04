@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cocina.css">
+    <title>Cocina</title>
+</head>
+<body>
+    <header>
+        <h1 id="nombre_user">Cocina</h1>
+    </header>
+
+
+  <div class="filtros">
+        <input type="text" id="buscar_alumno" placeholder="Buscar alumno...">
+        <select id="filtrar_curso">
+            <option>Todos los cursos</option>
+            <option value="1 Eso">1 Eso</option>
+            <option value="2 Eso">2 Eso</option>
+            <option value="3 Eso">3 Eso</option>
+            <option value="4 Eso">4 Eso</option>
+        </select>
+        <button id="btn_filtrar">Filtrar</button>
+    </div>
+
+
+
+ <table>
+        <thead>
+            <tr>
+                <th>Nombre alumnos y apellidos</th>
+                <th>Curso</th>
+                <th>Bocadillo</th>
+                <th>Tipo de bocadillo</th>
+                <th>Confirmar</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Lucia Vera</td>
+                <td>1 Eso</td>
+                <td>Nocilla</td>
+                <td>Caliente</td>
+                <td><button class="btn-hecho">Hecho</button></td>
+            </tr>
+            <tr>
+                <td>Laura Ballester</td>
+                <td>1 Eso</td>
+                <td>Tortilla</td>
+                <td>Caliente</td>
+                <td><button class="btn-hecho">Hecho</button></td>
+            </tr>
+            <tr>
+                <td>Fermin Trujillo</td>
+                <td>4 Eso</td>
+                <td>Jamón Serrano</td>
+                <td>Frio</td>
+                <td><button class="btn-Pendiente">Pendiente</button></td>
+            </tr>
+            <tr>
+                <td>Jimena Gomez</td>
+                <td>3 Eso</td>
+                <td>Queso</td>
+                <td>Caliente</td>
+                <td><button class="btn-hecho">Hecho</button></td>
+            </tr>
+            <tr>
+                <td>Roberto Harasym</td>
+                <td>2 Eso</td>
+                <td>Chorizo</td>
+                <td>Frio</td>
+                <td><button class="btn-hecho">Hecho</button></td>
+            </tr>
+            <tr>
+                <td>Ines Girona</td>
+                <td>4 Eso</td>
+                <td>Queso</td>
+                <td>Caliente</td>
+                <td><button class="btn-Pendiente">Pendiente</button></td>
+            </tr>
+            <tr>
+                <td>Daniel Pamies</td>
+                <td>3 Eso</td>
+                <td>Bacon</td>
+                <td>Caliente</td>
+                <td><button class="btn-Pendiente">Pendiente</button></td>
+            </tr>
+            <tr>
+                <td>Monica Ballester</td>
+                <td>4 Eso</td>
+                <td>Bacon</td>
+                <td>Caliente</td>
+                <td><button class="btn-hecho">Hecho</button></td>
+            </tr>
+
+           
+
+
+
+        </tbody>
+    </table>
+    <div class="resumen">
+        <h3>Resumen de bocadillos</h3>
+        <p>Total fríos: <span id="total_frios">2</span></p>
+        <p>Total calientes: <span id="total_calientes">6</span></p>
+    </div>
+
+
+    
+
+    
+</body>
+</html>
