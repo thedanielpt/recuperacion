@@ -41,20 +41,23 @@
             $rol = $usuario['rol'];
             //Comprueba si su ral es de Alumno
             if ($rol == "Alumno"){
-                //Si el usuario esta de altapasa, si no no pasa
-                //$sql = ('SELECT * from alumno where email = :email');
-                //$stmt -> execute($param);
-                //$alumno = $stmt->fetch();
-                //echo $alumno;
-                //$alta = $alumno['alta'];
-                //echo $alta;
-                //exit();
-                //if($alta = "false"){
+                //Si el usuario esta de altapasa, si no, no pasa
+                $sql_alumno = ('SELECT * from alumno where email = :email');
+                //Prepara la query de alumno
+                $stmt = $pdo->prepare($sql_alumno);
+                //Parametro del email
+                $param = ['email' => $email];
+                //Ejecuta los parametros
+                $stmt->execute($param);
+                //Coge el array asociativo del alumno encontrado
+                $alumno = $stmt->fetch();
+                //Recoje el alta del alumno
+                $alta = $alumno['alta'];
+                if($alta == "false"){
                     header("Location: inicio_user.html");
-                //} else {
-                //    $errorBusqueda = "Usuario dado dde alta";
-                //}
-                
+                } else {
+                    $errorBusqueda = "Usuario dado de alta";
+                }
             //Comprueba si su ral es de Cocina
             }else if($rol == "Cocina"){
                 header("Location: cocina.html");
