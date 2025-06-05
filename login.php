@@ -9,6 +9,7 @@
 <body>
 
     <?php
+    session_start();
     //Conexión al servidor
     require_once "conexion.php";
 
@@ -24,7 +25,6 @@
         $sql = ("SELECT * FROM usuario where email = :email and password = :passg");
         
         //Array que tiene los parametros
-        $param = [];
         $param['email'] = $email;
         $param['passg'] = $passg;
 
@@ -53,17 +53,23 @@
                 $alumno = $stmt->fetch();
                 //Recoje el alta del alumno
                 $alta = $alumno['alta'];
-                if($alta == "false"){
-                    header("Location: inicio_user.html");
+                if($alta){
+                    $_SESSION['nombre'] = $alumno['nombre'];
+                    header("Location: inicio_user.php");
+                    exit();
                 } else {
-                    $errorBusqueda = "Usuario dado de alta";
+                    $errorBusqueda = "Usuario dado de baja";
                 }
             //Comprueba si su ral es de Cocina
             }else if($rol == "Cocina"){
+                $_SESSION['nombre'] = $rol;
                 header("Location: cocina.html");
+                exit();
             //Comprueba si su ral es de Admin    
             }else if($rol == "Admin"){
+                $_SESSION['nombre'] = $rol;
                 header("Location: admin_usuarios.html");
+                exit();
             }
         } else {
             //Muestra el error si no se ha encontrado el usuario
