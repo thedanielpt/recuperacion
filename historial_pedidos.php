@@ -15,8 +15,9 @@
 
     <nav>
         <ul class="ul_nav">
-            <li><a href="inicio_user.html">Inicio</a></li>
-            <li><a href="historial_pedidos.html">Historial de pedidos</a></li>
+            <li><a href="inicio_user.php">Inicio</a></li>
+            <li><a href="historial_pedidos.php">Historial de pedidos</a></li>
+            <li><a href="logout.php">Cerrar sesión</a></li>
         </ul>
     </nav>
 

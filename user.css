@@ -45,7 +45,7 @@ nav {
 }
 
 #div_horario {
-    width: 25%;
+    width: 15%;
     font-family: 'comfortaa';
 }
 
@@ -67,7 +67,7 @@ a:hover{
 }
 
 #logo {
-    width: 20%;
+    width: 30%;
     background-color: blue;
 }
 
@@ -100,8 +100,7 @@ a:hover{
 
 article {
     margin: auto;
-    margin-top: 1%;
-    background-color: rgb(57, 98, 135);
+    background-color: rgb(255, 255, 255);
     width: 80%;
     min-width: 400px;
     border-radius: 30px;
@@ -155,6 +154,11 @@ ul {
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 30px;
+}
+
+.div_parrafo_bocata {
+    width: 88%;
+    margin: 0 auto;
 }
 
 h3 {

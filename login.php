@@ -32,7 +32,7 @@
         $stmt = $pdo->prepare($sql);
         //Ejecuta el array para que cambie los parametros por la contraseña y el email
         $stmt -> execute($param);
-        //Coje los atributos del ususario
+        //Coge los atributos del ususario
         $usuario = $stmt->fetch();
         
         //Si usuario existe
@@ -55,6 +55,7 @@
                 $alta = $alumno['alta'];
                 if($alta){
                     $_SESSION['nombre'] = $alumno['nombre'];
+                    $_SESSION['email'] = $email;
                     header("Location: inicio_user.php");
                     exit();
                 } else {
