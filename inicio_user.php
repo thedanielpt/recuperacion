@@ -1,8 +1,8 @@
 <?php
-    //Sesión iniciada
-    session_start();
     //Hace la coneión con la base de datos
     require_once "conexion.php";
+    //Sesión iniciada
+    session_start();
     //Variables que dice si ha pedido o no bocadillos
     $pedido_caliente=false;
     $pedido_frio=false;
@@ -252,7 +252,7 @@
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_pedir_frio" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
                                     echo '</form>';
-                                echo '</div>'; 
+                                echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar 
                             } elseif ($estado_bocadillo == "FRIO" || ($pedido_frio == true && $row['estado'] == "FRIO")){
                                 //Comprueba si se pidio un bocata anteriormente

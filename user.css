@@ -138,7 +138,6 @@ ul {
     display: flex;
     color: white;
     justify-content: space-around;
-    padding-bottom: 10px;
     font-size: 1.1em;
 }
 
@@ -222,7 +221,7 @@ th, td {
     padding: 8px;
 }
 
-.btn-pendiente {
+.preparado {
     background-color: red;
     color: white;
     border: none;
@@ -233,7 +232,7 @@ th, td {
 }
 
 
-.btn-retirado {
+.retirado {
     background-color: green;
     color: white;
     border: none;

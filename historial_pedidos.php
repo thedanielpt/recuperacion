@@ -1,3 +1,11 @@
+<?php 
+    //Conexión a la base de datos
+    require_once "conexion.php";
+    //Inicio de sesión
+    session_start();
+    //Variables utilizadas
+    $mes = isset($_POST['mes']) ? $_POST['mes'] : 0;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +18,7 @@
    <header>
     <div id="div_user">
         <img src="img/usuario.jpg" id="imagen_user">
-        <h2 id="nombre_user">Daniel Pamies Teruel</h2>
+        <h2 id="nombre_user"><?php echo $_SESSION['nombre'] ?></h2>
      </div>
 
     <nav>
@@ -21,100 +29,85 @@
         </ul>
     </nav>
 
+    <div id="div_horario"></div>
+
     <div id="div_logo">
         <img src="img/login-logo.png" id="img_logo">
     </div>
-</header>   
+</header>
 
     <h1>Historial de bocadillos</h1>
-    <div class="formulario"></div>
-        <form method="get">
-            <label for="mes"><strong>Selecciona un mes</label></strong> 
-                <select id="mes">
-                <option disabled selected>Mes</option>
-                <option>Enero</option>
-                <option>Febrero</option>
-                <option>Marzo</option>
-                <option>Abril</option>
-                <option>Mayo</option>
-                <option>Junio</option>
-                <option>Julio</option>
-                <option>Agosto</option>
-                <option>Septiembre</option>
-                <option>Octubre</option>
-                <option>Noviembre</option>
-                <option>Diciembre</option>
-            </select>
-        </form>
-    </div>      
-        <table>
-            <thead>
-                <tr>
-                    
-                    <th>Bocadillo</th>
-                    <th>Tipo de bocadillo</th>
-                    <th>Fecha</th>
-                    <th>Precio total</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Jamón</td>
-                    <td>Frio</td>
-                    <td>21-01-2025</td>
-                    <td>2,50 €</td>
-                    <td><button class="btn-pendiente">Pendiente</button></td>
-                </tr>
-                <tr>
-                    <td>Queso</td>
-                    <td>Frio</td>
-                    <td>19-01-2025</td>
-                    <td>3 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td>Lomo</td>
-                    <td>Caliente</td>
-                    <td>18-01-2025</td>
-                    <td>2,50 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td>Bacon y huevo</td>
-                    <td>Caliente</td>
-                    <td>17-01-2025</td>
-                    <td>3 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td>Hamburguesa</td>
-                    <td>Frio</td>
-                    <td>15-01-2025</td>
-                    <td>4 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td>Lomo</td>
-                    <td>Frio</td>
-                    <td>15-01-2025</td>
-                    <td>2,50 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td>Jamón</td>
-                    <td>Frio</td>
-                    <td>14-01-2025</td>
-                    <td>2,50 €</td>
-                    <td><button class="btn-retirado">Retirado</button></td>
-                </tr>
-                <tr>
-                    <td colspan="3"></td>
-                 <td style="font-weight: bold;">Total: 20 €</td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <?php 
+        echo '<div class="formulario">';
+            echo '<form method="post">';
+                echo '<label for="mes">Selecciona un mes</label>'; 
+                echo '<select id="mes" name="mes">';
+                    echo '<option value="null" selected>Mes</option>';
+                    echo '<option value="1">Enero</option>';
+                    echo '<option value="2">Febrero</option>';
+                    echo '<option value="3">Marzo</option>';
+                    echo '<option value="4">Abril</option>';
+                    echo '<option value="5">Mayo</option>';
+                    echo '<option value="6">Junio</option>';
+                    echo '<option value="7">Julio</option>';
+                    echo '<option value="8">Agosto</option>';
+                    echo '<option value="9">Septiembre</option>';
+                    echo '<option value="10">Octubre</option>';
+                    echo '<option value="11">Noviembre</option>';
+                    echo '<option value="12">Diciembre</option>';
+                echo '</select>';
+                echo '<button type="submit" name="filtro">Filtrar</button>';
+            echo '</form>';
+        echo '</div>';
+        
+        echo '<table>';
+            echo '<thead>';
+                echo '<tr>';
+                    echo '<th>Bocadillo</th>';
+                    echo '<th>Tipo de bocadillo</th>';
+                    echo '<th>Fecha</th>';
+                    echo '<th>Precio total</th>';
+                    echo '<th>Estado</th>';
+                echo '</tr>';
+            echo '</thead>';
+            echo '<tbody>';
+                $sql = "SELECT b.nombre as nombre_bocata, b.estado as estado_bocata, p.fecha_pedido as fecha_pedido, 
+                b.coste as coste, p.estado as estado_pedido
+                FROM pedidos p, bocadillos b
+                WHERE p.id_bocadillo = b.id AND p.id_usuario = :usuario ";
+                //Parametros
+                $param = ['usuario' => $_SESSION['email']];
+
+                if(isset($_POST['filtro'])) {
+                    $sql .= " AND MONTH(p.fecha_pedido) = :mes";
+                    $param['mes']=$mes;
+                }
+                //Prepara la consulta
+                $stmt = $pdo->prepare($sql);
+                //ejecuta la consulta
+                $stmt->execute($param);
+                //Bucle que muestra los pedidos
+                foreach($stmt->fetchAll() as $pedido) {
+                    echo '<tr>';
+                        echo '<td>'.$pedido['nombre_bocata'].'</td>';
+                        echo '<td>'.$pedido['estado_bocata'].'</td>';
+                        echo '<td>'.$pedido['fecha_pedido'].'</td>';
+                        echo '<td>'.$pedido['coste'].'</td>';
+                        if ($pedido['estado_pedido'] == "PREPARADO") {
+                            echo '<td>';
+                            echo '<div class="preparado">'.$pedido['estado_pedido'].'</div>';
+                            echo '</td>';
+                        } elseif($pedido['estado_pedido'] == "RETIRADO") {
+                            echo '<td>';
+                            echo '<div class="retirado">'.$pedido['estado_pedido'].'</div>';
+                            echo '</td>';
+                        }
+                    echo '</tr>';
+                }
+           echo '</tbody>';
+            echo '</tbody>';
+            echo '</table>';
+        echo '</table>';    
+    ?>    
 </body>
-</html>z
+</html>
