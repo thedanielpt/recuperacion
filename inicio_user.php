@@ -4,65 +4,111 @@
     //Hace la coneión con la base de datos
     require_once "conexion.php";
     //Variables que dice si ha pedido o no bocadillos
-    $pedido_caliente = false;
-    $pedido_frio = false;
+    $pedido_caliente=false;
+    $pedido_frio=false;
     $id_bocata = 0;
-    //Se guarda en al sesion para si el usuario quiere retirar el pedido
-    $id_pedido = $_SESSION['id_pedido'] ?? 0;
     //Para guardar el id del bocata
     $id_bocadillo_caliente = isset($_POST['boton_bocatas_pedir_caliente']) ? $_POST['boton_bocatas_pedir_caliente'] : 0;
     $id_bocadillo_frio = isset($_POST['boton_bocatas_pedir_frio']) ? $_POST['boton_bocatas_pedir_frio'] : 0;
     
-    if(!empty($_POST['boton_bocatas_pedir_caliente']) && $pedido_caliente == true){
+    if(isset($_POST['boton_bocatas_retirar_caliente']) || isset($_POST['boton_bocatas_retirar_frio'])){
         //query para eliminar el pedido
-        $sql = ('DELETE FROM Pedidos where id = :id_pedido');
+        $sql = ('DELETE FROM Pedidos 
+        where id_bocadillo = :id_bocadillo and id_usuario = :id_usuario and fecha_pedido = :fecha');
         //Parametro de id del pedido
-        $param = ['id_pedido' => $id_pedido];
-        echo $id_bocata;
+        if(isset($_POST['boton_bocatas_retirar_caliente'])) {
+            $id_bocata = $_POST['boton_bocatas_retirar_caliente'];
+        } elseif(isset($_POST['boton_bocatas_retirar_frio'])) {
+            $id_bocata = $_POST['boton_bocatas_retirar_frio'];
+        }    
+
+        //Parametros
+        $param = ['id_bocadillo' => $id_bocata,
+        'id_usuario' => $_SESSION['email'],
+        'fecha' => date('Y-m-d')];
         //Prepara la query
         $stmt = $pdo->prepare($sql);
         //Ejecuta la query con los parametros
         $stmt->execute($param);
+        //Cambia los botones
+        $pedido_caliente=false;
+        $pedido_frio=false;
     }
 
-    if ($id_bocata == 0){
-        $pedido_caliente == false;
+    if($pedido_caliente == false && $pedido_frio == false) {
+        if(!empty($_POST['boton_bocatas_pedir_caliente'])) {
+            //-----BUsca el id mas alto------
+            $sql = ('SELECT max(id) as id FROM pedidos');
+            //Prepara la query
+            $stmt = $pdo->prepare($sql);
+            //Ejecuta la consulta
+            $stmt->execute();
+            //Mete el id mas alto en esta variable
+            $id_maximo = $stmt->fetch();
+            //Recoge el id mas alto y suma 1 para que no se repita
+            $id = $id_maximo['id'] + 1;
+            //Variabeld e los parametros
+            $param = [
+            //ID se mete en el array de param
+            'id' => $id,
+            //el email se mete en el array del usuario
+            'id_usuario' => $_SESSION['email'],
+            //fecha de hoy dentro del array
+            'fecha' => date('Y-m-d'),
+            //Estado del pedido
+            'estado' => "Preparado",
+            //ID del bocata
+            'id_bocadillo' => $id_bocadillo_caliente
+            ];
+            //$sql = ('INSERT INTO pedidos set ');
+            $sql_insertar_bocata = ('INSERT INTO pedidos (id, estado, fecha_pedido, id_usuario, id_bocadillo) VALUES (:id, :estado, :fecha, :id_usuario, :id_bocadillo)');
+            //Prepara la query para insertar el pedido
+            $stmt = $pdo->prepare($sql_insertar_bocata);
+            //Ejecuta los parametros y la query
+            $stmt->execute($param);
+            //Cambia el estadod el boton
+            $pedido_caliente=true;
+        }
+
+        if(!empty($_POST['boton_bocatas_pedir_frio'])) {
+            //-----BUsca el id mas alto------
+            $sql = ('SELECT max(id) as id FROM pedidos');
+            //Prepara la query
+            $stmt = $pdo->prepare($sql);
+            //Ejecuta la consulta
+            $stmt->execute();
+            //Mete el id mas alto en esta variable
+            $id_maximo = $stmt->fetch();
+            //Recoge el id mas alto y suma 1 para que no se repita
+            $id = $id_maximo['id'] + 1;
+            $_SESSION['id_pedido'] = $id;
+            //Variabeld e los parametros
+            $param = [
+            //ID se mete en el array de param
+            'id' => $id,
+            //el email se mete en el array del usuario
+            'id_usuario' => $_SESSION['email'],
+            //fecha de hoy dentro del array
+            'fecha' => date('Y-m-d'),
+            //Estado del pedido
+            'estado' => "Preparado",
+            //ID del bocata
+            'id_bocadillo' => $id_bocadillo_frio
+            ];
+            //$sql = ('INSERT INTO pedidos set ');
+            $sql_insertar_bocata = ('INSERT INTO pedidos (id, estado, fecha_pedido, id_usuario, id_bocadillo) VALUES (:id, :estado, :fecha, :id_usuario, :id_bocadillo)');
+            //Prepara la query para insertar el pedido
+            $stmt = $pdo->prepare($sql_insertar_bocata);
+            //Ejecuta los parametros y la query
+            $stmt->execute($param);
+            //Cambia el estadod el boton
+            $pedido_frio=true;
+        }
+    } else{
+        echo "El bocata no se puede pedir porque ya tienes uno pedido";
     }
 
-    if(!empty($_POST['boton_bocatas_pedir_caliente']) && $pedido_caliente == false) {
-        //-----BUsca el id mas alto------
-        $sql = ('SELECT max(id) as id FROM pedidos');
-        //Prepara la query
-        $stmt = $pdo->prepare($sql);
-        //Ejecuta la consulta
-        $stmt->execute();
-        //Mete el id mas alto en esta variable
-        $id_maximo = $stmt->fetch();
-        //Recoge el id mas alto y suma 1 para que no se repita
-        $id = $id_maximo['id'] + 1;
-        $_SESSION['id_pedido'] = $id;
-        //Variabeld e los parametros
-        $param = [
-        //ID se mete en el array de param
-        'id' => $id,
-        //el email se mete en el array del usuario
-        'id_usuario' => $_SESSION['email'],
-        //fecha de hoy dentro del array
-        'fecha' => date('Y-m-d'),
-        //Estado del pedido
-        'estado' => "Preparado",
-        //ID del bocata
-        'id_bocadillo' => $id_bocadillo_caliente
-        ];
-        //$sql = ('INSERT INTO pedidos set ');
-        $sql_insertar_bocata = ('INSERT INTO pedidos (id, estado, fecha_pedido, id_usuario, id_bocadillo) VALUES (:id, :estado, :fecha, :id_usuario, :id_bocadillo)');
-        //Prepara la query para insertar el pedido
-        $stmt = $pdo->prepare($sql_insertar_bocata);
-        //Ejecuta los parametros y la query
-        $stmt->execute($param);
-        //Cambia el estadod el boton
-        $pedido_caliente = true;
-    }
+    
 ?>
 
 
@@ -122,7 +168,13 @@
                             echo '</div>';
 
                             echo '<div class="div_descripcion">';
-                                echo '<h3 class="titulo_bocata">'.$row['nombre'].' (CALIENTE)</h3>';
+
+                                if($row['estado'] == "CALIENTE") {
+                                    echo '<h3 class="titulo_bocata">'.$row['nombre'].' (CALIENTE)</h3>';
+                                } else {
+                                    echo '<h3 class="titulo_bocata">'.$row['nombre'].' (FRIO)</h3>';
+                                }
+                                
 
                                 echo '<h3>Descripción del bocata:</h3>';
 
@@ -149,31 +201,51 @@
                                 }
                                 echo '</ul>';       
                             echo '</div>';
-
-                            if($pedido_caliente==false && $row['estado'] == "CALIENTE") {
+                            //SQL para comprobar si tiene un pedido hoy
+                            $sql_comprobar_pedidos = "SELECT b.estado as estado_bocadillo, p.id as id_pedido
+                            FROM pedidos p, bocadillos b
+                            WHERE p.id_bocadillo = b.id and id_usuario = :id_usuario and fecha_pedido = :fecha";
+                            //Parametros para hacer el sql
+                            $param = ['id_usuario' => $_SESSION['email'],
+                            'fecha' => date('Y-m-d')];
+                            //Prepara el sql
+                            $stmt = $pdo->prepare($sql_comprobar_pedidos);
+                            //Ejecuta la consulta
+                            $stmt->execute($param);
+                            //Coge los parametros en una variable
+                            $comprobar_pedido = $stmt->fetch();
+                            //Si no existe se combierte en null
+                            if ($comprobar_pedido === false) {
+                                $estado_bocadillo = null;
+                            } else {
+                                $estado_bocadillo = $comprobar_pedido['estado_bocadillo'];
+                            }
+                            //Compureba los botones
+                            if($pedido_caliente == false && $row['estado'] == "CALIENTE") {
                                 $id_bocadillo_caliente = $row['id'];
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_pedir_caliente" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
-                            } elseif ($pedido_caliente==true && $row['estado'] == "CALIENTE"){
+                            } elseif ($pedido_caliente == true && $row['estado'] == "CALIENTE"){
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
-                                        echo '<button type="submit" name="boton_bocatas_retirar_caliente" class="boton_bocatas_retirar" value="'.$row['id'].'">Retirar bocata</button>';
+                                        echo '<button type="submit" name="boton_bocatas_retirar_caliente" class="boton_bocatas_retirar" value="'.$id_bocadillo_caliente.'">Retirar bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
-                            }elseif($pedido_frio==false && $row['estado'] == "FRIO") {
+                            } elseif($pedido_frio == false && $row['estado'] == "FRIO") {
                                 $id_bocadillo_frio = $row['id'];
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_pedir_frio" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
-                            } elseif ($pedido_frio==true && $row['estado'] == "FRIO"){
+                            } elseif ($pedido_frio == true && $row['estado'] == "FRIO"){
+                                //Falta que le aparezca el pedido hecho, aunque se vaya del logueo
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
-                                        echo '<button type="submit" name="boton_bocatas_retirar_frio" class="boton_bocatas_retirar" value="'.$row['id'].'">Retirar bocata</button>';
+                                        echo '<button type="submit" name="boton_bocatas_retirar_frio" class="boton_bocatas_retirar" value="'.$id_bocadillo_frio.'">Retirar bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
                             }
