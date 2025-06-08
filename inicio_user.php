@@ -202,7 +202,7 @@
                                 echo '</ul>';       
                             echo '</div>';
                             //SQL para comprobar si tiene un pedido hoy
-                            $sql_comprobar_pedidos = "SELECT b.estado as estado_bocadillo, p.id as id_pedido
+                            $sql_comprobar_pedidos = "SELECT b.estado as estado_bocadillo, p.id_bocadillo as id_bocadillo
                             FROM pedidos p, bocadillos b
                             WHERE p.id_bocadillo = b.id and id_usuario = :id_usuario and fecha_pedido = :fecha";
                             //Parametros para hacer el sql
@@ -220,29 +220,47 @@
                             } else {
                                 $estado_bocadillo = $comprobar_pedido['estado_bocadillo'];
                             }
-                            //Compureba los botones
+                            //Si no ha pedido un bocadillo le aparece el boton de pedir bocata caliente
                             if($pedido_caliente == false && $row['estado'] == "CALIENTE") {
+                                //Recoje el id del bocadillo
                                 $id_bocadillo_caliente = $row['id'];
+                                //Boton de pedir bocata caliente
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_pedir_caliente" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
-                            } elseif ($pedido_caliente == true && $row['estado'] == "CALIENTE"){
+                            //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar    
+                            } elseif ($estado_bocadillo == "CALIENTE" || ($pedido_caliente == true && $row['estado'] == "CALIENTE")){
+                                //Comprueba si se pidio un bocata anteriormente
+                                if($estado_bocadillo == "CALIENTE") {
+                                    $id_bocadillo_caliente = $comprobar_pedido['id_bocadillo'];
+                                    $pedido_caliente = true;
+                                }
+                                //Boton de retirar bocata caliente
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_retirar_caliente" class="boton_bocatas_retirar" value="'.$id_bocadillo_caliente.'">Retirar bocata</button>';
                                     echo '</form>';
                                 echo '</div>';
+                            //Si no ha pedido un bocadillo le aparece el boton de pedir bocata frio
                             } elseif($pedido_frio == false && $row['estado'] == "FRIO") {
+                                //id del bocata frio
                                 $id_bocadillo_frio = $row['id'];
+                                //boton para pedir un bocata frio
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_pedir_frio" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
                                     echo '</form>';
-                                echo '</div>';
-                            } elseif ($pedido_frio == true && $row['estado'] == "FRIO"){
-                                //Falta que le aparezca el pedido hecho, aunque se vaya del logueo
+                                echo '</div>'; 
+                            //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar 
+                            } elseif ($estado_bocadillo == "FRIO" || ($pedido_frio == true && $row['estado'] == "FRIO")){
+                                //Comprueba si se pidio un bocata anteriormente
+                                if($estado_bocadillo == "FRIO") {
+                                    $id_bocadillo_frio = $comprobar_pedido['id_bocadillo'];
+                                    $pedido_frio = true;
+                                }
+                                //Boton de retirar
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
                                         echo '<button type="submit" name="boton_bocatas_retirar_frio" class="boton_bocatas_retirar" value="'.$id_bocadillo_frio.'">Retirar bocata</button>';
