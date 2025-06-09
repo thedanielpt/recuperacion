@@ -69,7 +69,7 @@
             //Comprueba si su ral es de Admin    
             }else if($rol == "Admin"){
                 $_SESSION['nombre'] = $rol;
-                header("Location: admin_usuarios.html");
+                header("Location: admin_usuarios.php");
                 exit();
             }
         } else {

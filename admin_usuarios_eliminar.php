@@ -4,7 +4,7 @@
     //Conexion a la base de datos
     require_once("conexion.php");
 
-    
+    if(!isset($_POST['boton_bocatas_retirar_frio'])))
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,8 +22,7 @@
     
          <nav>
             <ul>
-                <li><a href="admin_usuarios.html">Usuarios</a></li>
-                <li><a href="admin_cocina.html">Bocatas</a></li>
+                <li><a href="admin_usuarios.php">Usuarios</a></li>
             </ul>
         </nav>
 
@@ -37,39 +36,63 @@
             <h2>Eliminar usuario</h2>
         </div>
 
-        <div id="div_enlaces_gestion_usuario">
-            <div class="div_enlaces">
-                <button type="button" id="eliminar_usuarios">Eliminar</button>   
+        <form action="admin_usuarios_eliminar.php" method="post">
+            <div id="div_enlaces_gestion_usuario">
+                <div class="div_enlaces">
+                    <button type="submit" id="eliminar_usuarios" name="boton_bocatas_retirar_frio">Eliminar</button>   
+                </div>
             </div>
-        </div>
-
-        <div id="div_tabla">
-            <table border="1" id="tabla_usuarios">
-                <thead>
-                    <tr>
-                        <th>Nombre y apellidos</th>
-                        <th>Curso</th>
-                        <th>Gmail</th>
-                        <th>Contraseña</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Daniel Pamies teruel</td>
-                        <td>1ºESO</td>
-                        <td>ani@elcampico.com</td>
-                        <td>Alfonso1_Fernandez</td>
-                     <td><input type="checkbox" name="eliminar_usuarios"></td>
-                    </tr>
-                    <?php 
-                        $sql = ('select * from usuario');
-                        $stmt = execute($sql);
-                        while()
-                    ?> 
-                </tbody>
-            </table>
-        </div>
+            <div id="div_tabla">
+                <table border="1" id="tabla_usuarios">
+                    <thead>
+                        <tr>
+                            <th>Gmail</th>
+                            <th>Contraseña</th>
+                            <th>Nombre y apellidos</th>
+                            <th>Curso</th>
+                            <th>rol</th>
+                            <th>Alta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            //Query que quiero eejcutar
+                            $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
+                            FROM usuario u
+                            LEFT JOIN alumno a ON u.email = a.email;');
+                            //Prepara la ejecucón de la query
+                            $stmt = $pdo->prepare($sql);
+                            //Ejecuta la query
+                            $stmt->execute();
+                            //Pasar los registros a la variable
+                            $usuarios = $stmt->fetchAll();
+                            foreach($usuarios as $usuario){
+                                echo '<tr>';
+                                if($usuario['rol'] == "Alumno") {
+                                    echo '<td>'.$usuario['email'].'</td>';
+                                    echo '<td>'.$usuario['password'].'</td>';
+                                    echo '<td>'.$usuario['nombre'].'</td>';
+                                    echo '<td>'.$usuario['curso'].'</td>';
+                                    echo '<td>'.$usuario['rol'].'</td>';
+                                    echo '<td>'.$usuario['alta'].'</td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios" value='.$usuario['email'].'></td>';
+                                } else {
+                                    echo '<td>'.$usuario['email'].'</td>';
+                                    echo '<td>'.$usuario['password'].'</td>';
+                                    echo '<td> null </td>';
+                                    echo '<td> null </td>';
+                                    echo '<td>'.$usuario['rol'].'</td>';
+                                    echo '<td> null </td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios" value'.$usuario['email'].'></td>';
+                                }
+                                echo '</tr>';
+                            }
+                        ?> 
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        
     </section>
 </body>
 </html>
