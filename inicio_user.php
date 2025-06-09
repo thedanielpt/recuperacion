@@ -4,6 +4,7 @@
     //Sesión iniciada
     session_start();
     //Variables que dice si ha pedido o no bocadillos
+    //TODO estas variables siempre se poenn en false, tiene que guardarse el valor cambiado antes de una recarga
     $pedido_caliente=false;
     $pedido_frio=false;
     $id_bocata = 0;
@@ -46,6 +47,7 @@
             //Mete el id mas alto en esta variable
             $id_maximo = $stmt->fetch();
             //Recoge el id mas alto y suma 1 para que no se repita
+            //TODO hacer autoIncremental
             $id = $id_maximo['id'] + 1;
             //Variabeld e los parametros
             $param = [
@@ -104,11 +106,7 @@
             //Cambia el estadod el boton
             $pedido_frio=true;
         }
-    } else{
-        echo "El bocata no se puede pedir porque ya tienes uno pedido";
     }
-
-    
 ?>
 
 
@@ -175,7 +173,6 @@
                                     echo '<h3 class="titulo_bocata">'.$row['nombre'].' (FRIO)</h3>';
                                 }
                                 
-
                                 echo '<h3>Descripción del bocata:</h3>';
 
                                 echo '<div class="div_parrafo_bocata">';
@@ -215,7 +212,7 @@
                             //Coge los parametros en una variable
                             $comprobar_pedido = $stmt->fetch();
                             //Si no existe se combierte en null
-                            if ($comprobar_pedido === false) {
+                            if ($comprobar_pedido == false) {
                                 $estado_bocadillo = null;
                             } else {
                                 $estado_bocadillo = $comprobar_pedido['estado_bocadillo'];
@@ -231,7 +228,7 @@
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar    
-                            } elseif ($estado_bocadillo == "CALIENTE" || ($pedido_caliente == true && $row['estado'] == "CALIENTE")){
+                            } elseif (($pedido_caliente == true && $row['estado'] == "CALIENTE")){
                                 //Comprueba si se pidio un bocata anteriormente
                                 if($estado_bocadillo == "CALIENTE") {
                                     $id_bocadillo_caliente = $comprobar_pedido['id_bocadillo'];
@@ -254,7 +251,7 @@
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar 
-                            } elseif ($estado_bocadillo == "FRIO" || ($pedido_frio == true && $row['estado'] == "FRIO")){
+                            } elseif (($pedido_frio == true && $row['estado'] == "FRIO")){
                                 //Comprueba si se pidio un bocata anteriormente
                                 if($estado_bocadillo == "FRIO") {
                                     $id_bocadillo_frio = $comprobar_pedido['id_bocadillo'];

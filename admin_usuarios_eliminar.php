@@ -1,3 +1,11 @@
+<?php 
+    //inicio de sesión
+    session_start();
+    //Conexion a la base de datos
+    require_once("conexion.php");
+
+    
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

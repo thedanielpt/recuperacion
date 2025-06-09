@@ -1,3 +1,11 @@
+<?php 
+    //Sesion iniciada
+    session_start();
+    //Conexion a la base de datos
+    require_once("conexion.php")
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +22,6 @@
     
         <nav>
             <a href="admin_usuarios.html">Usuarios</a>
-            <a href="admin_cocina.html">Bocatas</a>
         </nav>  
         
 
@@ -30,11 +37,11 @@
 
         <div id="div_enlaces_gestion_usuario">
             <div class="div_enlaces">
-                <a href="admin_usuarios_eliminar.html" id="eliminar_usuario">Eliminar</a>    
+                <a href="admin_usuarios_eliminar.php" id="eliminar_usuario">Eliminar</a>    
             </div>
     
             <div class="div_enlaces">
-                <a href="admin_usuarios_anadir.html" id="anadir">Añadir</a>
+                <a href="admin_usuarios_anadir.php" id="anadir">Añadir</a>
             </div>
         </div>
 
