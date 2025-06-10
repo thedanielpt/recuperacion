@@ -4,7 +4,24 @@
     //Conexion a la base de datos
     require_once("conexion.php");
 
-    if(isset("boton_bocatas_retirar_frio"))
+    //Variables utilizadas
+    $usuarios = isset($_POST['eliminar_usuarios']) ? $_POST['eliminar_usuarios'] : null;
+
+    if(isset($_POST["eliminar_boton"])) {
+        
+        //Query utilizada
+        $sql = ("DELETE FROM usuario 
+        where email = :email");
+        
+        //Prepara la query
+        $stmt = $pdo->prepare($sql);
+
+        //ejecuta la query con los parametros
+        foreach($usuarios as $usuario) {
+            $stmt->execute(['email' => $usuario]);
+        }
+        
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +56,7 @@
         <form action="admin_usuarios_eliminar.php" method="post">
             <div id="div_enlaces_gestion_usuario">
                 <div class="div_enlaces">
-                    <button type="submit" id="eliminar_usuarios" name="boton_bocatas_retirar_frio" value="1">Eliminar</button>   
+                    <button type="submit" id="eliminar_usuarios" name="eliminar_boton">Eliminar</button>   
                 </div>
             </div>
             <div id="div_tabla">
@@ -75,7 +92,7 @@
                                     echo '<td>'.$usuario['curso'].'</td>';
                                     echo '<td>'.$usuario['rol'].'</td>';
                                     echo '<td>'.$usuario['alta'].'</td>';
-                                    echo '<td><input type="checkbox" name="eliminar_usuarios" value='.$usuario['email'].'></td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                 } else {
                                     echo '<td>'.$usuario['email'].'</td>';
                                     echo '<td>'.$usuario['password'].'</td>';
@@ -83,7 +100,7 @@
                                     echo '<td> null </td>';
                                     echo '<td>'.$usuario['rol'].'</td>';
                                     echo '<td> null </td>';
-                                    echo '<td><input type="checkbox" name="eliminar_usuarios" value'.$usuario['email'].'></td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                 }
                                 echo '</tr>';
                             }
@@ -92,7 +109,6 @@
                 </table>
             </div>
         </form>
-        
     </section>
 </body>
 </html>
