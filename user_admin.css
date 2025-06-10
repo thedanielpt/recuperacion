@@ -51,13 +51,10 @@ nav {
     display: flex;
     color: white;
     justify-content: space-around;
-<<<<<<< HEAD
     padding-bottom: 10px;
     font-size: 1.3em;
-=======
     flex-wrap: wrap;
     font-size: 2em;
->>>>>>> 6a01e0ddd7ef8628779ff352f42dd6eca6a4d4b3
 }
 
 a {
