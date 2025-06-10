@@ -4,7 +4,7 @@
     //Conexion a la base de datos
     require_once("conexion.php");
 
-    
+    if(isset("boton_bocatas_retirar_frio"))
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +39,7 @@
         <form action="admin_usuarios_eliminar.php" method="post">
             <div id="div_enlaces_gestion_usuario">
                 <div class="div_enlaces">
-                    <button type="submit" id="eliminar_usuarios" name="boton_bocatas_retirar_frio">Eliminar</button>   
+                    <button type="submit" id="eliminar_usuarios" name="boton_bocatas_retirar_frio" value="1">Eliminar</button>   
                 </div>
             </div>
             <div id="div_tabla">

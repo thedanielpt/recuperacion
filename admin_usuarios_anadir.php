@@ -15,7 +15,7 @@
     $usuarioRepetidoEnLaBD = null;
 
     try {
-        if(!empty($_POST['crear'])) {
+        if(isset($_POST['crear'])) {
         
             //Query que se va a ejecutar
             $sql = ("INSERT INTO usuario (email, password, rol) VALUES (:email, :password, :rol)");
@@ -48,12 +48,6 @@
 
                 //Ejecuta la query con los parametros
                 $stmt->execute($param_alumno);
-
-                /*if ($alergias != null) {
-                    foreach($alergias as $alergia) {
-                        $sql_alumo_alergias = ("INSERT INTO bocadillos_laergenos () VALUES ")
-                    }
-                }*/
             }
         }
     } catch ( PDOException $e) {
@@ -176,7 +170,7 @@
                 </div>    
 
                 <div id="div_boton_crear">
-                        <button type="submit" name="crear" class="boton_crear_modificar" value="1">Crear usuario</button>
+                        <button type="submit" name="crear" class="boton_crear_modificar">Crear usuario</button>
                 </div>
             </form>
         </article>
