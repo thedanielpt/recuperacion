@@ -225,26 +225,21 @@ ol {
 /* admin_usuarios_añadir y admin_usuarios_modificar */
 
 #section_crearModificarUser {
-    width: 50%;
+    width: 90%;
     margin: 0 auto;
-    margin-top: 40px;
-    min-width: 350px;
-    background-color: #f4f8ff;
-    border-radius: 20px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    justify-content: center;
 }
 
+#añadir_usuario_titulo {
+    margin: 1%;
+}
 
 .article_crearModificarUser {
-    width: 90%;
+    width: 97%;
     background-color: #e1f0ff;
     margin-top: 20px;
     margin-bottom: 20px;
     min-width: 250px;
     border-radius: 20px;
-    padding: 20px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -262,23 +257,28 @@ ol {
 
 .div_formulario {
     font-family: Helvetica, Arial, sans-serif;
-    padding: 20px;
+    padding: 10px;
     background-color: #ffffff;
     border-radius: 15px;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .formulario_div {
+    width: 46%;
     background-color: rgb(228, 237, 246);
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 15px;
+    margin: 1%;
+    padding: 10px;
     border-radius: 10px;
     font-size: 1.1em;
 }
 
 .formulario_div:hover {
     background-color: #d1e5f5;
+}
+
+.dos_div {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .input_crear {

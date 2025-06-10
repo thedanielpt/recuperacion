@@ -72,21 +72,18 @@
     <script>
         function ocultarAtributosAlumno(){
             var nombre_apellido = document.getElementById('nombre_apellido');
-            var curso = document.getElementById('curso');
-            var alergenos = document.getElementById('alergenos');
+            var curso = document.getElementById('curso');   
             var alta = document.getElementById('alta');
             var usuario = document.getElementById('usuario').value;
 
             if (usuario != "Alumno") {
                 nombre_apellido.style.display = "none";
                 curso.style.display = "none";
-                alergenos.style.display = "none";
                 alta.style.display = "none";
             } else {
                 nombre_apellido.style.display = "block";
                 curso.style.display = "block";
-                alergenos.style.display = "block";
-                alta.style.isplay = "block";
+                alta.style.display = "block";
             }
         }
     </script>
@@ -113,62 +110,70 @@
         <article class="article_crearModificarUser">
 
             <div id="div_titulo">
-                <h2>AÑADIR USUARIO</h2>
+                <h2 id="añadir_usuario_titulo">AÑADIR USUARIO</h2>
             </div>
 
             <form action="admin_usuarios_anadir.php" method="POST" class="div_formulario">
-                
-                <div class="formulario_div">
-                    <label for="usuario" class="label_crear_modificar">Tipo de usuario</label>
-                    <select name="usuario" class="seleccion" onchange="ocultarAtributosAlumno()" id="usuario" required>
-                        <option value="Alumno">Alumno</option>
-                        <option value="Cocina">Cocina</option>
-                        <option value="Admin">Admin</option>
-                    </select>
+                <div class="dos_div">
+                    <div class="formulario_div">
+                        <label for="usuario" class="label_crear_modificar">Tipo de usuario</label>
+                        <select name="usuario" class="seleccion" onchange="ocultarAtributosAlumno()" id="usuario" required>
+                            <option value="Alumno">Alumno</option>
+                            <option value="Cocina">Cocina</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <div class="formulario_div">
+                        <label for="email" class="label_crear_modificar">Email:</label>
+                        <div class="div_input_crear">
+                            <input type="email" name="email" placeholder="daniel@elCampico.com" class="input_crear" required>
+                        </div>
+                        <p><?php echo $usuarioRepetidoEnLaBD; ?></p>
+                    </div>
+                    
                 </div>
 
                 
-                <div class="formulario_div" id="nombre_apellido">
-                    <label for="nombre_apellidos" class="label_crear_modificar">Nombre y apellidos del usuario:</label>
-                    <div class="div_input_crear">
-                        <input type="text" name="nombre_apellidos" placeholder="Daniel Pamies Teruel" class="input_crear">
+                <div class="dos_div">
+                    <div class="formulario_div">
+                        <label for="contrasena" class="label_crear_modificar">Contraseña:</label>
+                        <div class="div_input_crear">
+                            <input type="password" name="contrasena" placeholder="pepito_123" class="input_crear" required>
+                        </div>
                     </div>
-                </div>
-    
-                <div class="formulario_div" id="curso">
-                    <label for="curso" class="label_crear_modificar">Curso:</label>
-                    <select name="curso" class="seleccion">
-                        <option value="1ºESO">1ºESO</option>
-                        <option value="2ºESO">2ºESO</option>
-                        <option value="3ºESO">3ºESO</option>
-                        <option value="4ºESO">4ºESO</option>
-                        <option value="Grado Medio 1º año">Grado Medio 1º año</option>
-                        <option value="Grado Medio 2º año">Grado Medio 2º año</option>
-                    </select>
-                </div>
-    
-                <div class="formulario_div">
-                    <label for="email" class="label_crear_modificar">Email:</label>
-                    <div class="div_input_crear">
-                        <input type="email" name="email" placeholder="daniel@elCampico.com" class="input_crear" required>
-                    </div>
-                    <p><?php echo $usuarioRepetidoEnLaBD; ?></p>
-                </div>
-    
-                <div class="formulario_div">
-                    <label for="contrasena" class="label_crear_modificar">Contraseña:</label>
-                    <div class="div_input_crear">
-                        <input type="password" name="contrasena" placeholder="pepito_123" class="input_crear" required>
-                    </div>
-                </div>
 
-                <div class="formulario_div" id="alta">
-                    <label for="alta" class="label_crear_modificar">Dado de alta o e baja:</label>
-                    <select name="alta" id="alta" class="seleccion">
-                        <option value="false" default>Baja</option>
-                        <option value="true">Alta</option>
-                    </select>
+                    <div class="formulario_div" id="nombre_apellido">
+                        <label for="nombre_apellidos" class="label_crear_modificar">Nombre y apellidos del usuario:</label>
+                        <div class="div_input_crear">
+                            <input type="text" name="nombre_apellidos" placeholder="Daniel Pamies Teruel" class="input_crear">
+                        </div>
+                    </div>
+        
                 </div>
+                
+                <div class="dos_div">
+
+                    <div class="formulario_div" id="curso">
+                        <label for="curso" class="label_crear_modificar">Curso:</label>
+                        <select name="curso" class="seleccion">
+                            <option value="1ºESO">1ºESO</option>
+                            <option value="2ºESO">2ºESO</option>
+                            <option value="3ºESO">3ºESO</option>
+                            <option value="4ºESO">4ºESO</option>
+                            <option value="Grado Medio 1º año">Grado Medio 1º año</option>
+                            <option value="Grado Medio 2º año">Grado Medio 2º año</option>
+                        </select>
+                    </div>
+
+                    <div class="formulario_div" id="alta">
+                        <label for="alta" class="label_crear_modificar">Dado de alta o baja:</label>
+                        <select name="alta" class="seleccion">
+                            <option value="true" default>Alta</option>
+                            <option value="false">Baja</option>
+                        </select>
+                    </div>
+                </div>    
 
                 <div id="div_boton_crear">
                         <button type="submit" name="crear" class="boton_crear_modificar" value="1">Crear usuario</button>

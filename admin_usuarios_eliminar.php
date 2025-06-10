@@ -4,7 +4,7 @@
     //Conexion a la base de datos
     require_once("conexion.php");
 
-    if(!isset($_POST['boton_bocatas_retirar_frio'])))
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
