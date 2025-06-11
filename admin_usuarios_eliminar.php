@@ -6,6 +6,9 @@
 
     //Variables utilizadas
     $usuarios = isset($_POST['eliminar_usuarios']) ? $_POST['eliminar_usuarios'] : null;
+    $filtro_email = isset($_POST['email']) ? $_POST['email'] : null;
+    $filtro_rol = isset($_POST['filtrar_rol']) ? $_POST['filtrar_rol'] : null;
+    $errorArrayVacio = null;
 
     if(isset($_POST["eliminar_boton"])) {
         
@@ -17,11 +20,17 @@
         $stmt = $pdo->prepare($sql);
 
         //ejecuta la query con los parametros
-        foreach($usuarios as $usuario) {
-            $stmt->execute(['email' => $usuario]);
+        if(is_iterable($usuarios)) {
+            foreach($usuarios as $usuario) {
+                $stmt->execute(['email' => $usuario]);
+            }
+        } else {
+            $errorArrayVacio = "Usuario no seleccionado";
         }
         
     }
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,10 +63,32 @@
         </div>
 
         <form action="admin_usuarios_eliminar.php" method="post">
+
             <div id="div_enlaces_gestion_usuario">
-                <div class="div_enlaces">
-                    <button type="submit" id="eliminar_usuarios" name="eliminar_boton">Eliminar</button>   
+
+                <div class="filtros">
+                    <label for="filtrar_rol">Filtrar emial:</label>
+                    <select name="filtrar_rol">
+                        <option value="">Todos</option>
+                        <option value="Alumno">Alumno</option>
+                        <option value="Cocina">Cocina</option>
+                        <option value="Admin">Admin</option>
+                    </select> 
                 </div>
+
+                <div class="filtros">
+                    <label for="email">Filtrar emial:</label>
+                    <input type="text" name="email"> 
+                </div>
+
+                <div class="div_enlaces">
+                    <button type="submit" name="filtrar" id="filtrar">Filtrar</button>  
+                </div>
+                
+                <div class="div_enlaces">
+                    <button type="submit" id="eliminar_usuarios" name="eliminar_boton">Eliminar</button>  
+                </div>
+                <p><?php echo $errorArrayVacio ?></p> 
             </div>
             <div id="div_tabla">
                 <table border="1" id="tabla_usuarios">
@@ -76,11 +107,26 @@
                             //Query que quiero eejcutar
                             $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
                             FROM usuario u
-                            LEFT JOIN alumno a ON u.email = a.email;');
+                            LEFT JOIN alumno a ON u.email = a.email
+                            where true ');
+
+                            $param = null;
+                            if (isset($_POST['filtrar'])) {
+                                if (isset($filtro_email) && !empty($filtro_email)){
+                                    $sql .= " AND u.email = :email";
+                                    $param = ['email' => $filtro_email];
+                                }
+
+                                if(isset($filtro_rol) && !empty($filtro_rol)){
+                                    $sql .= " AND u.rol = :rol";
+                                    $param = ['rol' => $filtro_rol];
+                                }
+                            }
+                            
                             //Prepara la ejecucón de la query
                             $stmt = $pdo->prepare($sql);
                             //Ejecuta la query
-                            $stmt->execute();
+                            $stmt->execute($param);
                             //Pasar los registros a la variable
                             $usuarios = $stmt->fetchAll();
                             foreach($usuarios as $usuario){
@@ -96,10 +142,10 @@
                                 } else {
                                     echo '<td>'.$usuario['email'].'</td>';
                                     echo '<td>'.$usuario['password'].'</td>';
-                                    echo '<td> null </td>';
-                                    echo '<td> null </td>';
+                                    echo '<td>  </td>';
+                                    echo '<td>  </td>';
                                     echo '<td>'.$usuario['rol'].'</td>';
-                                    echo '<td> null </td>';
+                                    echo '<td>  </td>';
                                     echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                 }
                                 echo '</tr>';

@@ -97,7 +97,7 @@ a:hover{
     }
 }
 
-/* admin_usuarios*/
+/* admin_usuarios y admin_usuarios_eliminar*/
 
 #div_titulo {   
     display: flex;
@@ -119,6 +119,27 @@ a:hover{
     justify-content: center;
     margin: 5px;
     min-width: 100px;
+}
+
+#filtrar {
+    background-color: #58a3d4;
+    margin: 10px;
+    border-radius: 20px;
+    justify-content: center;
+    padding: 10px;
+    color: white;
+}
+
+#filtrar:hover {
+    background-color: #306992;
+    text-decoration: none;
+    color: white;
+}
+
+.filtros {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    margin-left: 20px;
 }
 
 #eliminar_usuario {
