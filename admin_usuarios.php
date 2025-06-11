@@ -41,9 +41,10 @@
             <h2>GESTION DE USUARIOS</h2>
         </div>
 
-        <div id="div_enlaces_gestion_usuario">
-
-            <div class="filtros">
+        <form action="admin_usuarios.php" method="post">
+            
+            <div id="div_enlaces_gestion_usuario">    
+                <div class="filtros">
                     <label for="filtrar_rol">Filtrar emial:</label>
                     <select name="filtrar_rol">
                         <option value="">Todos</option>
@@ -62,79 +63,80 @@
                     <button type="submit" name="filtrar" id="filtrar">Filtrar</button>  
                 </div>
 
-            <div class="div_enlaces">
-                <a href="admin_usuarios_eliminar.php" id="eliminar_enlace">Eliminar</a>    
+                <div class="div_enlaces">
+                    <a href="admin_usuarios_eliminar.php" id="eliminar_enlace">Eliminar</a>    
+                </div>
+        
+                <div class="div_enlaces">
+                    <a href="admin_usuarios_anadir.php" id="anadir_enlace">Añadir</a>
+                </div>
             </div>
-    
-            <div class="div_enlaces">
-                <a href="admin_usuarios_anadir.php" id="anadir_enlace">Añadir</a>
+
+            <div id="div_tabla">
+                <table border="1" id="tabla_usuarios">
+                    <thead>
+                        <tr>
+                            <th>Gmail</th>
+                            <th>Contraseña</th>
+                            <th>Nombre y apellidos</th>
+                            <th>Curso</th>
+                            <th>rol</th>
+                            <th>Alta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            //Query que quiero eejcutar
+                            $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
+                            FROM usuario u
+                            LEFT JOIN alumno a ON u.email = a.email
+                            where true ');
+
+                            $param = null;
+                            if (isset($_POST['filtrar'])) {
+                                if (isset($filtro_email) && !empty($filtro_email)){
+                                    $sql .= " AND u.email = :email";
+                                    $param = ['email' => $filtro_email];
+                                }
+
+                                if(isset($filtro_rol) && !empty($filtro_rol)){
+                                    $sql .= " AND u.rol = :rol";
+                                    $param = ['rol' => $filtro_rol];
+                                }
+                            }
+                                
+                            //Prepara la ejecucón de la query
+                            $stmt = $pdo->prepare($sql);
+                            //Ejecuta la query
+                            $stmt->execute($param);
+                            //Pasar los registros a la variable
+                            $usuarios = $stmt->fetchAll();
+                            foreach($usuarios as $usuario){
+                                echo '<tr>';
+                                if($usuario['rol'] == "Alumno") {
+                                    echo '<td>'.$usuario['email'].'</td>';
+                                    echo '<td>'.$usuario['password'].'</td>';
+                                    echo '<td>'.$usuario['nombre'].'</td>';
+                                    echo '<td>'.$usuario['curso'].'</td>';
+                                    echo '<td>'.$usuario['rol'].'</td>';
+                                    echo '<td>'.$usuario['alta'].'</td>';
+                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar" value="">Modicar</a></td>';
+                                } else {
+                                    echo '<td>'.$usuario['email'].'</td>';
+                                    echo '<td>'.$usuario['password'].'</td>';
+                                    echo '<td>  </td>';
+                                    echo '<td>  </td>';
+                                    echo '<td>'.$usuario['rol'].'</td>';
+                                    echo '<td>  </td>';
+                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar" value="">Modicar</a></td>';
+                                }
+                                echo '</tr>';
+                            }
+                        ?> 
+                    </tbody>
+                </table>
             </div>
-        </div>
-
-        <div id="div_tabla">
-            <table border="1" id="tabla_usuarios">
-                <thead>
-                    <tr>
-                        <th>Gmail</th>
-                        <th>Contraseña</th>
-                        <th>Nombre y apellidos</th>
-                        <th>Curso</th>
-                        <th>rol</th>
-                        <th>Alta</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                        //Query que quiero eejcutar
-                        $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
-                        FROM usuario u
-                        LEFT JOIN alumno a ON u.email = a.email
-                        where true ');
-
-                        $param = null;
-                        if (isset($_POST['filtrar'])) {
-                            if (isset($filtro_email) && !empty($filtro_email)){
-                                $sql .= " AND u.email = :email";
-                                $param = ['email' => $filtro_email];
-                            }
-
-                            if(isset($filtro_rol) && !empty($filtro_rol)){
-                                $sql .= " AND u.rol = :rol";
-                                $param = ['rol' => $filtro_rol];
-                            }
-                        }
-                            
-                        //Prepara la ejecucón de la query
-                        $stmt = $pdo->prepare($sql);
-                        //Ejecuta la query
-                        $stmt->execute($param);
-                        //Pasar los registros a la variable
-                        $usuarios = $stmt->fetchAll();
-                        foreach($usuarios as $usuario){
-                            echo '<tr>';
-                            if($usuario['rol'] == "Alumno") {
-                                echo '<td>'.$usuario['email'].'</td>';
-                                echo '<td>'.$usuario['password'].'</td>';
-                                echo '<td>'.$usuario['nombre'].'</td>';
-                                echo '<td>'.$usuario['curso'].'</td>';
-                                echo '<td>'.$usuario['rol'].'</td>';
-                                echo '<td>'.$usuario['alta'].'</td>';
-                                echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
-                            } else {
-                                echo '<td>'.$usuario['email'].'</td>';
-                                echo '<td>'.$usuario['password'].'</td>';
-                                echo '<td>  </td>';
-                                echo '<td>  </td>';
-                                echo '<td>'.$usuario['rol'].'</td>';
-                                echo '<td>  </td>';
-                                echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
-                            }
-                            echo '</tr>';
-                        }
-                    ?> 
-                </tbody>
-            </table>
-        </div>
+        </form>    
     </section>
 </body>
 </html>
