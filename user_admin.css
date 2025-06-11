@@ -123,10 +123,10 @@ a:hover{
 
 #filtrar {
     background-color: #58a3d4;
-    margin: 10px;
+    margin-top: 30px;
     border-radius: 20px;
-    justify-content: center;
-    padding: 10px;
+    height: 40px;
+    padding: 5px;
     color: white;
 }
 
@@ -137,19 +137,7 @@ a:hover{
 }
 
 .filtros {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    margin-left: 20px;
-}
-
-#eliminar_enlace {
-    background-color: rgb(255, 119, 119);
-    margin: 10px;
-    border-radius: 20px;
-    padding: 10px;
-    font-size: 15px;
-    height: 20px;
-    width: 54px;
+    margin-top: 40px;
 }
 
 section div div a {
@@ -162,15 +150,9 @@ section div div a:hover {
     color: white;
 }
 
-#eliminar_enlace:hover {
-    background-color: darkred;
-    text-decoration: none;
-    color: white;
-}
-
 #anadir_enlace {
     background-color: rgb(45, 178, 57);
-    margin: 10px;
+    margin-top: 30px;
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
@@ -187,11 +169,9 @@ section div div a:hover {
     margin: 5px;
     background-color: rgb(98, 134, 157);
     border-radius: 20px;
-    height: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 5px;
     color: white;
+    padding: 3px;
+    margin: 1px;
 }
 
 .modificar:hover {
@@ -231,11 +211,10 @@ ol {
 
 #eliminar_usuarios {
     background-color: rgb(255, 119, 119);
-    margin: 10px;
+    margin-top: 30px;    
     border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
+    height: 40px;
+    padding: 5px;
     color: white;
 }
 

@@ -1,7 +1,6 @@
 <?php 
     //inicio de sesión
     session_start();
-
     //Conexion a la base de datos
     require_once("conexion.php");
 
@@ -9,8 +8,49 @@
     $usuarios = isset($_POST['eliminar_usuarios']) ? $_POST['eliminar_usuarios'] : null;
     $filtro_email = isset($_POST['email']) ? $_POST['email'] : null;
     $filtro_rol = isset($_POST['filtrar_rol']) ? $_POST['filtrar_rol'] : null;
+    $errorArrayVacio = null;
+
+    $registros = isset($_POST['registros']) ? $_POST['registros'] : 0;
+    $numero_pagina = isset($_POST['numero_pagina']) ? $_POST['numero_pagina']:1;
+
+    //Variables de Paginado
+
+    if(isset($_POST['subir'])){
+        $registros +=  10;
+        $numero_pagina += 1;
+    }
+
+    if(isset($_POST['bajar'])) {
+        $registros -= 10;
+        $numero_pagina -= 1;
+
+        if ($registros < 0) {
+            $registros= 0;
+            $numero_pagina = 1;
+        }
+    }
+
     
-?>    
+
+    if(isset($_POST["eliminar_boton"])) {
+        
+        //Query utilizada
+        $sql = ("DELETE FROM usuario 
+        where email = :email");
+        
+        //Prepara la query
+        $stmt = $pdo->prepare($sql);
+
+        //ejecuta la query con los parametros
+        if(is_iterable($usuarios)) {
+            foreach($usuarios as $usuario) {
+                $stmt->execute(['email' => $usuario]);
+            }
+        } else {
+            $errorArrayVacio = "Usuario no seleccionado";
+        }   
+    }
+?>  
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +84,9 @@
         <form action="admin_usuarios.php" method="post">
             
             <div id="div_enlaces_gestion_usuario">    
+
                 <div class="filtros">
+
                     <label for="filtrar_rol">Filtrar emial:</label>
                     <select name="filtrar_rol">
                         <option value="">Todos</option>
@@ -52,11 +94,10 @@
                         <option value="Cocina">Cocina</option>
                         <option value="Admin">Admin</option>
                     </select> 
-                </div>
 
-                <div class="filtros">
                     <label for="email">Filtrar emial:</label>
-                    <input type="text" name="email"> 
+                    <input type="text" name="email" value='<?php echo $filtro_email; ?>'> 
+                    
                 </div>
 
                 <div class="div_enlaces">
@@ -64,8 +105,9 @@
                 </div>
 
                 <div class="div_enlaces">
-                    <a href="admin_usuarios_eliminar.php" id="eliminar_enlace">Eliminar</a>    
+                    <button type="submit" id="eliminar_usuarios" name="eliminar_boton">Eliminar</button>  
                 </div>
+                <p><?php echo $errorArrayVacio ?></p> 
         
                 <div class="div_enlaces">
                     <a href="admin_usuarios_anadir.php" id="anadir_enlace">Añadir</a>
@@ -86,13 +128,14 @@
                     </thead>
                     <tbody>
                         <?php
-                            //Query que quiero eejcutar
+                            //Query que quiero ejcutar para buscar
                             $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
                             FROM usuario u
                             LEFT JOIN alumno a ON u.email = a.email
                             where true ');
 
                             $param = null;
+                            
                             if (isset($_POST['filtrar'])) {
                                 if (isset($filtro_email) && !empty($filtro_email)){
                                     $sql .= " AND u.email = :email";
@@ -104,13 +147,15 @@
                                     $param = ['rol' => $filtro_rol];
                                 }
                             }
-                                
+
+                            $sql .= ' LIMIT ' . ($registros) . ', 10;';
                             //Prepara la ejecucón de la query
                             $stmt = $pdo->prepare($sql);
                             //Ejecuta la query
                             $stmt->execute($param);
                             //Pasar los registros a la variable
                             $usuarios = $stmt->fetchAll();
+
                             foreach($usuarios as $usuario){
                                 echo '<tr>';
                                 if($usuario['rol'] == "Alumno") {
@@ -120,7 +165,8 @@
                                     echo '<td>'.$usuario['curso'].'</td>';
                                     echo '<td>'.$usuario['rol'].'</td>';
                                     echo '<td>'.$usuario['alta'].'</td>';
-                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar" value="">Modicar</a></td>';
+                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                 } else {
                                     echo '<td>'.$usuario['email'].'</td>';
                                     echo '<td>'.$usuario['password'].'</td>';
@@ -128,13 +174,20 @@
                                     echo '<td>  </td>';
                                     echo '<td>'.$usuario['rol'].'</td>';
                                     echo '<td>  </td>';
-                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar" value="">Modicar</a></td>';
+                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                 }
                                 echo '</tr>';
                             }
-                        ?> 
+                        ?>
                     </tbody>
                 </table>
+            </div>
+            <div id="div_tabla">
+                <button type="submit" name="bajar"><</button>
+                <input type="number" name="registros" value="<?php echo $registros; ?>">
+                <input type="number" name="numero_pagina" value="<?php echo $numero_pagina; ?>">
+                <button type="submit" name="subir">></button>
             </div>
         </form>    
     </section>
