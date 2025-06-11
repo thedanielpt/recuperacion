@@ -142,14 +142,14 @@ a:hover{
     margin-left: 20px;
 }
 
-#eliminar_usuario {
+#eliminar_enlace {
     background-color: rgb(255, 119, 119);
-    margin: 30px;
+    margin: 10px;
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
     height: 20px;
-    width: 70%;
+    width: 54px;
 }
 
 section div div a {
@@ -162,23 +162,23 @@ section div div a:hover {
     color: white;
 }
 
-#eliminar_usuario:hover {
+#eliminar_enlace:hover {
     background-color: darkred;
     text-decoration: none;
     color: white;
 }
 
-#anadir {
+#anadir_enlace {
     background-color: rgb(45, 178, 57);
-    margin: 30px;
+    margin: 10px;
     border-radius: 20px;
     padding: 10px;
     font-size: 15px;
     height: 20px;
-    width: 70%;
+    width: 45px;
 }
 
-#anadir:hover {
+#anadir_enlace:hover {
     background-color: rgb(26, 99, 32);
     color: white;
 }

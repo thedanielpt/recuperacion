@@ -26,11 +26,8 @@
             }
         } else {
             $errorArrayVacio = "Usuario no seleccionado";
-        }
-        
+        }   
     }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
