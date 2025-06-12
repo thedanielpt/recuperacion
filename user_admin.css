@@ -350,3 +350,37 @@ ol {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+#div_paginado {
+    width: 72%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#boton_bajar_subir{
+    background-color: greenyellow;
+    height: 30px;
+    width: 30px;
+    border-radius: 20px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#div_registro {
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+#input_registros {
+    width: 30px;
+}
+
+#div_pagina {
+    margin-top: 5px;
+}
+
+#input_pagina {
+    width: 30px;
+}

@@ -10,10 +10,14 @@
     $filtro_rol = isset($_POST['filtrar_rol']) ? $_POST['filtrar_rol'] : null;
     $errorArrayVacio = null;
 
+    //Variables de Paginado
     $registros = isset($_POST['registros']) ? $_POST['registros'] : 0;
     $numero_pagina = isset($_POST['numero_pagina']) ? $_POST['numero_pagina']:1;
 
-    //Variables de Paginado
+    //Comprobar los registros para el paginado
+    if(($registros / 10) != $numero_pagina -1) {
+        $numero_pagina = ($registros /10) -1;
+    }
 
     if(isset($_POST['subir'])){
         $registros +=  10;
@@ -170,8 +174,24 @@
                             $sql .= ' LIMIT ' . ($registros) . ', 10;';
                             //Prepara la ejecucón de la query que muestra a los usuaiors
                             $stmt = $pdo->prepare($sql);
-                            //Ejecuta la query que muestra a los usuaiors
-                            $stmt->execute($param);
+                            //Ejecuta la query que muestra a los usuaiors y si hay un error ejecuta la quey sin los filtros
+                            try {
+                                $stmt->execute($param);
+                            } catch (PDOException $e) {
+                                //Query para buscar usuarios
+                                $sql = ('SELECT u.email as email, u.password as password, rol, alta, nombre, curso
+                                FROM usuario u
+                                LEFT JOIN alumno a ON u.email = a.email
+                                where true ');
+                                //Paginación
+                                $sql .= ' LIMIT ' . ($registros) . ', 10;';
+                                //Prepara la consulta de buscar usuario
+                                $stmt = $pdo->prepare($sql);
+                                //Ejecuta la consulta
+                                $stmt->execute();
+                                $filtro_email = null;
+                            }
+                            
                             //Pasar los registros a la variable que muestra a los usuaiors
                             $usuarios = $stmt->fetchAll();
                             
@@ -208,11 +228,23 @@
                     </tbody>
                 </table>
             </div>
-            <div id="div_tabla">
-                <button type="submit" name="bajar"><</button>
-                <input type="number" name="registros" value="<?php echo $registros; ?>">
-                <input type="number" name="numero_pagina" value="<?php echo $numero_pagina; ?>">
-                <button type="submit" name="subir">></button>
+            <div id="div_paginado">
+                <div id="div_bajar">
+                    <button type="submit" name="bajar" id="boton_bajar_subir"><</button>
+                </div>
+                <div id="div_registro">
+                    <label for="registros">Fila: </label>
+                    <input type="number" name="registros" id="input_registros" value="<?php echo $registros; ?>" readonly>
+                </div>
+                
+                <div id="div_pagina">
+                    <label for="numero_pagina">Pagina: </label>
+                    <input type="number" name="numero_pagina" id="input_pagina" value="<?php echo $numero_pagina; ?>" readonly>
+                </div>
+                
+                <div id="div_subir">
+                    <button type="submit" name="subir" id="boton_bajar_subir">></button>
+                </div>
             </div>
         </form>    
     </section>
