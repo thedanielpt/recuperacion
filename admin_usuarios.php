@@ -30,8 +30,6 @@
         }
     }
 
-    
-
     if(isset($_POST["eliminar_boton"])) {
         
         //Query utilizada
@@ -89,10 +87,10 @@
 
                     <label for="filtrar_rol">Filtrar emial:</label>
                     <select name="filtrar_rol">
-                        <option value="">Todos</option>
-                        <option value="Alumno">Alumno</option>
-                        <option value="Cocina">Cocina</option>
-                        <option value="Admin">Admin</option>
+                        <option value="" <?php if ($filtro_rol == "") echo 'selected'; ?>>Todos</option>
+                        <option value="Alumno" <?php if ($filtro_rol == "Alumno") echo 'selected'; ?>>Alumno</option>
+                        <option value="Cocina" <?php if ($filtro_rol == "Cocina") echo 'selected'; ?>>Cocina</option>
+                        <option value="Admin" <?php if ($filtro_rol == "Admin") echo 'selected'; ?>>Admin</option>
                     </select> 
 
                     <label for="email">Filtrar emial:</label>
@@ -101,7 +99,7 @@
                 </div>
 
                 <div class="div_enlaces">
-                    <button type="submit" name="filtrar" id="filtrar">Filtrar</button>  
+                    <button type="submit" name="filtrar" id="filtrar">Filtrar</button>
                 </div>
 
                 <div class="div_enlaces">
@@ -134,51 +132,78 @@
                             LEFT JOIN alumno a ON u.email = a.email
                             where true ');
 
+                            //TODO terminar de hacer el cuento de registros
+                            //Query para limitar el maximo de paginas
+                            $sql_paginacion = ('SELECT count(*) as total_registros
+                            FROM usuario');
+
+                            //Prepara la query de paginado
+                            $stmt_paginacion = $pdo->prepare($sql_paginacion);
+
+                            //Ejecuta la query que cuenta los registros
+                            $stmt_paginacion->execute();
+                            $total = $stmt_paginacion->fetch();
+                            $total_registros = $total['total_registros'];
+
                             $param = null;
+
+                            if($total_registros < (10 + $registros)) {
+                                while($registros > $total_registros) {
+                                    $registros -= 10;
+                                    $numero_pagina -=1;
+                                }
+                            }
                             
-                            if (isset($_POST['filtrar'])) {
-                                if (isset($filtro_email) && !empty($filtro_email)){
+                            if (isset($_POST['filtrar']) || isset($_POST['bajar']) || isset($_POST['subir'])) {
+                                if (!empty($filtro_email)){
                                     $sql .= " AND u.email = :email";
                                     $param = ['email' => $filtro_email];
+                                    $registros = 0;
+                                    $numero_pagina = 1;
                                 }
 
-                                if(isset($filtro_rol) && !empty($filtro_rol)){
+                                if(!empty($filtro_rol)){
                                     $sql .= " AND u.rol = :rol";
                                     $param = ['rol' => $filtro_rol];
                                 }
                             }
-
                             $sql .= ' LIMIT ' . ($registros) . ', 10;';
-                            //Prepara la ejecucón de la query
+                            //Prepara la ejecucón de la query que muestra a los usuaiors
                             $stmt = $pdo->prepare($sql);
-                            //Ejecuta la query
+                            //Ejecuta la query que muestra a los usuaiors
                             $stmt->execute($param);
-                            //Pasar los registros a la variable
+                            //Pasar los registros a la variable que muestra a los usuaiors
                             $usuarios = $stmt->fetchAll();
-
-                            foreach($usuarios as $usuario){
-                                echo '<tr>';
-                                if($usuario['rol'] == "Alumno") {
-                                    echo '<td>'.$usuario['email'].'</td>';
-                                    echo '<td>'.$usuario['password'].'</td>';
-                                    echo '<td>'.$usuario['nombre'].'</td>';
-                                    echo '<td>'.$usuario['curso'].'</td>';
-                                    echo '<td>'.$usuario['rol'].'</td>';
-                                    echo '<td>'.$usuario['alta'].'</td>';
-                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
-                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
-                                } else {
-                                    echo '<td>'.$usuario['email'].'</td>';
-                                    echo '<td>'.$usuario['password'].'</td>';
-                                    echo '<td>  </td>';
-                                    echo '<td>  </td>';
-                                    echo '<td>'.$usuario['rol'].'</td>';
-                                    echo '<td>  </td>';
-                                    echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
-                                    echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
+                            
+                            
+                            try {
+                                foreach($usuarios as $usuario){
+                                    echo '<tr>';
+                                    if($usuario['rol'] == "Alumno") {
+                                        echo '<td>'.$usuario['email'].'</td>';
+                                        echo '<td>'.$usuario['password'].'</td>';
+                                        echo '<td>'.$usuario['nombre'].'</td>';
+                                        echo '<td>'.$usuario['curso'].'</td>';
+                                        echo '<td>'.$usuario['rol'].'</td>';
+                                        echo '<td>'.$usuario['alta'].'</td>';
+                                        echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                        echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
+                                    } else {
+                                        echo '<td>'.$usuario['email'].'</td>';
+                                        echo '<td>'.$usuario['password'].'</td>';
+                                        echo '<td>  </td>';
+                                        echo '<td>  </td>';
+                                        echo '<td>'.$usuario['rol'].'</td>';
+                                        echo '<td>  </td>';
+                                        echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                        echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
+                                    }
+                                    echo '</tr>';
                                 }
-                                echo '</tr>';
+                            } catch (PDOException $e) {
+                                echo "Usuario no encontrado";
                             }
+                            
                         ?>
                     </tbody>
                 </table>
