@@ -149,7 +149,7 @@
                 //SQL del bocata caliente
                 $sql = "SELECT * 
                 FROM bocadillos 
-                WHERE (estado = 'CALIENTE' OR estado = 'FRIO') AND dia = date_format(now(), '%W')";
+                WHERE (temperatura = 'CALIENTE' OR temperatura = 'FRIO') AND dia = date_format(now(), '%W')";
                 //Prepara la consulta
                 $stmt = $pdo->prepare($sql);
                 //Ejecuta la consulta
@@ -167,7 +167,7 @@
 
                             echo '<div class="div_descripcion">';
 
-                                if($row['estado'] == "CALIENTE") {
+                                if($row['temperatura'] == "CALIENTE") {
                                     echo '<h3 class="titulo_bocata">'.$row['nombre'].' (CALIENTE)</h3>';
                                 } else {
                                     echo '<h3 class="titulo_bocata">'.$row['nombre'].' (FRIO)</h3>';
@@ -180,26 +180,25 @@
                                 echo '</div>';    
 
                                 echo '<h3>Alérgenos:</h3>';
-                                //SQL para los alergenos del bocata
-                                $sql_bocata = "SELECT GROUP_CONCAT(a.nombre SEPARATOR ', ') AS alergenos
-                                FROM alergenos a
-                                LEFT JOIN bocadillos_alergenos ba ON a.id = ba.id_alergenos
-                                WHERE ba.id_bocadillos = :id_bocata;";
-                                //repara la consulta
-                                $stmt = $pdo->prepare($sql_bocata);
-                                $stmt->execute(['id_bocata' => $id_bocata]);
-                                $alergias_bocata = $stmt->fetch();
-
-                                // Ahora accedes al valor correcto:
-                                $cadena_alergenos = explode(", ", $alergias_bocata['alergenos']);
-                                echo '<ul>';
-                                foreach($cadena_alergenos as $alergeno){
-                                    echo '<li>'.htmlspecialchars($alergeno).'</li>';
-                                }
-                                echo '</ul>';       
+                                    //SQL para los alergenos del bocata
+                                    $sql_bocata = "SELECT a.nombre AS nombre
+                                    FROM alergenos a
+                                    LEFT JOIN bocadillos_alergenos ba ON a.id = ba.id_alergenos
+                                    WHERE ba.id_bocadillos = :id_bocata;";
+                                    //repara la consulta
+                                    $stmt = $pdo->prepare($sql_bocata);
+                                    $stmt->execute(['id_bocata' => $id_bocata]);
+                                    $alergias_bocata = $stmt->fetchAll();
+                                    if ($alergias_bocata != null) {
+                                        echo '<ul>';
+                                        foreach($alergias_bocata as $alergeno){
+                                            echo '<li>'.$alergeno['nombre'].'</li>';
+                                        }
+                                        echo '</ul>';   
+                                    }
                             echo '</div>';
                             //SQL para comprobar si tiene un pedido hoy
-                            $sql_comprobar_pedidos = "SELECT b.estado as estado_bocadillo, p.id_bocadillo as id_bocadillo
+                            $sql_comprobar_pedidos = "SELECT b.temperatura as temperatura_bocadillo, p.id_bocadillo as id_bocadillo
                             FROM pedidos p, bocadillos b
                             WHERE p.id_bocadillo = b.id and id_usuario = :id_usuario and fecha_pedido = :fecha";
                             //Parametros para hacer el sql
@@ -213,12 +212,12 @@
                             $comprobar_pedido = $stmt->fetch();
                             //Si no existe se combierte en null
                             if ($comprobar_pedido == false) {
-                                $estado_bocadillo = null;
+                                $temperatura_bocadillo = null;
                             } else {
-                                $estado_bocadillo = $comprobar_pedido['estado_bocadillo'];
+                                $temperatura_bocadillo = $comprobar_pedido['temperatura_bocadillo'];
                             }
                             //Si no ha pedido un bocadillo le aparece el boton de pedir bocata caliente
-                            if($pedido_caliente == false && $row['estado'] == "CALIENTE") {
+                            if($pedido_caliente == false && $row['temperatura'] == "CALIENTE") {
                                 //Recoje el id del bocadillo
                                 $id_bocadillo_caliente = $row['id'];
                                 //Boton de pedir bocata caliente
@@ -228,9 +227,9 @@
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar    
-                            } elseif (($pedido_caliente == true && $row['estado'] == "CALIENTE")){
+                            } elseif (($pedido_caliente == true && $row['temperatura'] == "CALIENTE")){
                                 //Comprueba si se pidio un bocata anteriormente
-                                if($estado_bocadillo == "CALIENTE") {
+                                if($temperatura_bocadillo == "CALIENTE") {
                                     $id_bocadillo_caliente = $comprobar_pedido['id_bocadillo'];
                                     $pedido_caliente = true;
                                 }
@@ -241,7 +240,7 @@
                                     echo '</form>';
                                 echo '</div>';
                             //Si no ha pedido un bocadillo le aparece el boton de pedir bocata frio
-                            } elseif($pedido_frio == false && $row['estado'] == "FRIO") {
+                            } elseif($pedido_frio == false && $row['temperatura'] == "FRIO") {
                                 //id del bocata frio
                                 $id_bocadillo_frio = $row['id'];
                                 //boton para pedir un bocata frio
@@ -251,9 +250,9 @@
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar 
-                            } elseif (($pedido_frio == true && $row['estado'] == "FRIO")){
+                            } elseif (($pedido_frio == true && $row['temperatura'] == "FRIO")){
                                 //Comprueba si se pidio un bocata anteriormente
-                                if($estado_bocadillo == "FRIO") {
+                                if($temperatura_bocadillo == "FRIO") {
                                     $id_bocadillo_frio = $comprobar_pedido['id_bocadillo'];
                                     $pedido_frio = true;
                                 }

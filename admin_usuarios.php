@@ -44,13 +44,13 @@
         $stmt = $pdo->prepare($sql);
 
         //ejecuta la query con los parametros
-        if(is_iterable($usuarios)) {
+        if($usuarios != null) {
             foreach($usuarios as $usuario) {
                 $stmt->execute(['email' => $usuario]);
             }
         } else {
             $errorArrayVacio = "Usuario no seleccionado";
-        }   
+        }
     }
 ?>  
 
@@ -70,6 +70,7 @@
     
         <nav>
             <a href="admin_usuarios.php">Usuarios</a>
+            <a href="logout.php">Cerrar sesión</a>
         </nav>  
         
 
@@ -206,7 +207,7 @@
                                         echo '<td>'.$usuario['curso'].'</td>';
                                         echo '<td>'.$usuario['rol'].'</td>';
                                         echo '<td>'.$usuario['alta'].'</td>';
-                                        echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                        echo '<td><a href="admin_usuarios_modificar.php?email='.$usuario['email'].'" class="modificar">Modificar</a></td>';
                                         echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                     } else {
                                         echo '<td>'.$usuario['email'].'</td>';
@@ -215,7 +216,7 @@
                                         echo '<td>  </td>';
                                         echo '<td>'.$usuario['rol'].'</td>';
                                         echo '<td>  </td>';
-                                        echo '<td><a href="admin_usuarios_modificar.html" class="modificar">Modicar</a></td>';
+                                         echo '<td><a href="admin_usuarios_modificar.php?email='.$usuario['email'].'" class="modificar">Modificar</a></td>';
                                         echo '<td><input type="checkbox" name="eliminar_usuarios[]" value='.$usuario['email'].'></td>';
                                     }
                                     echo '</tr>';
@@ -233,8 +234,7 @@
                     <button type="submit" name="bajar" id="boton_bajar_subir"><</button>
                 </div>
                 <div id="div_registro">
-                    <label for="registros">Fila: </label>
-                    <input type="number" name="registros" id="input_registros" value="<?php echo $registros; ?>" readonly>
+                    <input type="number" name="registros" id="input_registros" value="<?php echo $registros; ?>" readonly hidden>
                 </div>
                 
                 <div id="div_pagina">

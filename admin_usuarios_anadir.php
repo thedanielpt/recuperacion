@@ -91,6 +91,7 @@
          <nav>
             <ul>
                 <li><a href="admin_usuarios.php">Usuarios</a></li>
+                <li><a href="logout.php">Cerrar sesión</a></li>
             </ul>
         </nav>
 
