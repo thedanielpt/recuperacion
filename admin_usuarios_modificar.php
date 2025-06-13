@@ -31,13 +31,23 @@
         $stmt = $pdo->prepare($sql);
         //Ejecuta la query de modificar
         $stmt->execute($param);
-        /*if ($rol == "Alumno"){
+
+        //Si es alumno tambien cambia los parametros de alumno
+        if ($rol == "Alumno"){
+            //Query para cambiar los valores del alumno
             $sql_alumno = ('UPDATE alumno
-            set email = :email, nombre = :nombre, alta = :alta, curso = :curso
-            where email = :email')
-
-
-        }*/
+            set nombre = :nombre, alta = :alta, curso = :curso
+            where email = :email');
+            //Parametros del alumno
+            $param = ['nombre' => $nombre,
+            'alta' => $alta,
+            'curso' => $curso,
+            'email' => $search_email];
+            //Prepara la query del alumno
+            $stmt = $pdo->prepare($sql_alumno);
+            //Ejecuta la query del alumno
+            $stmt->execute($param);
+        }
     }
 
     $sql = ('SELECT * 
@@ -192,8 +202,8 @@
                     <div class="formulario_div" id="alta">
                         <label for="alta" class="label_crear_modificar">Dado de alta o baja:</label>
                         <select name="alta" class="seleccion">
-                            <option value="true" <?php if($curso == "true"){echo 'selected';} ?> >Alta</option>
-                            <option value="false" <?php if($curso == "false"){echo 'selected';} ?>>Baja</option>
+                            <option value="true" <?php if($alta == "true"){echo 'selected';} ?> >Alta</option>
+                            <option value="false" <?php if($alta == "false"){echo 'selected';} ?>>Baja</option>
                         </select>
                     </div>
                 </div>    

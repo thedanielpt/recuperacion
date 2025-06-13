@@ -160,16 +160,20 @@
                             }
                             
                             if (isset($_POST['filtrar']) || isset($_POST['bajar']) || isset($_POST['subir'])) {
-                                if (!empty($filtro_email)){
-                                    $sql .= " AND u.email = :email";
-                                    $param = ['email' => $filtro_email];
-                                    $registros = 0;
-                                    $numero_pagina = 1;
-                                }
 
                                 if(!empty($filtro_rol)){
                                     $sql .= " AND u.rol = :rol";
                                     $param = ['rol' => $filtro_rol];
+                                    $filtro_email = null;
+                                }
+                            }
+
+                            if (isset($_POST['filtrar'])) {
+                                if (!empty($filtro_email) && $filtro_rol == ""){
+                                    $sql .= " AND u.email = :email";
+                                    $param = ['email' => $filtro_email];
+                                    $registros = 0;
+                                    $numero_pagina = 1;
                                 }
                             }
                             $sql .= ' LIMIT ' . ($registros) . ', 10;';
@@ -195,7 +199,6 @@
                             
                             //Pasar los registros a la variable que muestra a los usuaiors
                             $usuarios = $stmt->fetchAll();
-                            
                             
                             try {
                                 foreach($usuarios as $usuario){
