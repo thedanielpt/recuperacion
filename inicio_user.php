@@ -130,7 +130,6 @@
         <nav>
             <ul class="ul_nav">
                 <li><a href="inicio_user.php">Inicio</a></li>
-                <li><a href="historial_pedidos.php">Historial de pedidos</a></li>
                 <li><a href="logout.php">Cerrar sesión</a></li>
             </ul>
         </nav>
@@ -223,7 +222,11 @@
                                 //Boton de pedir bocata caliente
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
+                                    if($pedido_frio == false){
                                         echo '<button type="submit" name="boton_bocatas_pedir_caliente" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
+                                    } else {
+                                        echo '<button type="submit" name="boton_bocatas_pedir_caliente" class="boton_bocatas_pedir" value="'.$row['id'].'" disabled>Pedir bocata</button>';
+                                    }
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar    
@@ -246,7 +249,11 @@
                                 //boton para pedir un bocata frio
                                 echo '<div class="div_boton">';
                                     echo '<form action="inicio_user.php" method="post">';
+                                    if ($pedido_caliente == false) {
                                         echo '<button type="submit" name="boton_bocatas_pedir_frio" class="boton_bocatas_pedir" value="'.$row['id'].'">Pedir bocata</button>';
+                                    } else {
+                                        echo '<button type="submit" name="boton_bocatas_pedir_frio" class="boton_bocatas_pedir" value="'.$row['id'].'" disabled>Pedir bocata</button>';
+                                    }
                                     echo '</form>';
                                 echo '</div>';
                             //Si a pedido un bocadillo o ya lo pidio antes le aparece el boton de retirar 

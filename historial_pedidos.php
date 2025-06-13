@@ -67,11 +67,11 @@
                     echo '<th>Tipo de bocadillo</th>';
                     echo '<th>Fecha</th>';
                     echo '<th>Precio total</th>';
-                    echo '<th>Estado</th>';
+                    echo '<th>temperatura</th>';
                 echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
-                $sql = "SELECT b.nombre as nombre_bocata, b.estado as estado_bocata, p.fecha_pedido as fecha_pedido, 
+                $sql = "SELECT b.nombre as nombre_bocata, b.temperatura as temperatura_bocata, p.fecha_pedido as fecha_pedido, 
                 b.coste as coste, p.estado as estado_pedido
                 FROM pedidos p, bocadillos b
                 WHERE p.id_bocadillo = b.id AND p.id_usuario = :usuario ";
@@ -86,24 +86,31 @@
                 $stmt = $pdo->prepare($sql);
                 //ejecuta la consulta
                 $stmt->execute($param);
+                //Recoge el los registros encontrados
+                $pedidos = $stmt->fetchAll();
                 //Bucle que muestra los pedidos
-                foreach($stmt->fetchAll() as $pedido) {
-                    echo '<tr>';
-                        echo '<td>'.$pedido['nombre_bocata'].'</td>';
-                        echo '<td>'.$pedido['estado_bocata'].'</td>';
-                        echo '<td>'.$pedido['fecha_pedido'].'</td>';
-                        echo '<td>'.$pedido['coste'].'</td>';
-                        if ($pedido['estado_pedido'] == "PREPARADO") {
-                            echo '<td>';
-                            echo '<div class="preparado">'.$pedido['estado_pedido'].'</div>';
-                            echo '</td>';
-                        } elseif($pedido['estado_pedido'] == "RETIRADO") {
-                            echo '<td>';
-                            echo '<div class="retirado">'.$pedido['estado_pedido'].'</div>';
-                            echo '</td>';
-                        }
-                    echo '</tr>';
+                if ($pedidos == null) {
+                    
+                } else {
+                    foreach($pedidos as $pedido) {
+                        echo '<tr>';
+                            echo '<td>'.$pedido['nombre_bocata'].'</td>';
+                            echo '<td>'.$pedido['temperatura_bocata'].'</td>';
+                            echo '<td>'.$pedido['fecha_pedido'].'</td>';
+                            echo '<td>'.$pedido['coste'].'</td>';
+                            if ($pedido['estado_pedido'] == "PREPARADO") {
+                                echo '<td>';
+                                echo '<div class="preparado">'.$pedido['estado_pedido'].'</div>';
+                                echo '</td>';
+                            } elseif($pedido['estado_pedido'] == "RETIRADO") {
+                                echo '<td>';
+                                echo '<div class="retirado">'.$pedido['estado_pedido'].'</div>';
+                                echo '</td>';
+                            }
+                        echo '</tr>';
+                    }
                 }
+                
            echo '</tbody>';
             echo '</tbody>';
             echo '</table>';

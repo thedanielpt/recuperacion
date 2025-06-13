@@ -7,91 +7,131 @@
     //Variable de la url
     $email_url = $_GET['email'];
     //Variable del email que se utilizara para buscar el email que se quiera modificar
-    $search_email = isset($_POST['email_modificado']) ? $_POST['email_modificado'] : $email_url;
+    $email_comprobador = isset($_POST['email_comprobador']) ? $_POST['email_comprobador'] : $email_url;
     //Variables de usuario
     $email = isset($_POST['email_new']) ? $_POST['email_new'] : null;
     $contrasena = isset($_POST['contrasena']) ? $_POST['contrasena'] : null;
     $rol = isset($_POST['usuario']) ? $_POST['usuario'] : null;
+    //Variable que se utiliza para comprobar si el rol a sido cambiado
+    $rol_comprobador = isset($_POST['rol_comprobador']) ? $_POST['rol_comprobador'] : null;
     //variables de Alumno
     $nombre = isset ($_POST['nombre_apellidos']) ? $_POST['nombre_apellidos'] : null;
     $curso = isset ($_POST['curso']) ? $_POST['curso'] : null;
     $alta = isset ($_POST['alta']) ? $_POST['alta'] : null;
+    //Mensaje para el error de duplicate key
+    $error_duplicado_email = null;
 
-    if(isset($_POST['modificar'])) {
-        //Query para modificar
-        $sql = ('UPDATE usuario 
-        set email = :email_modificar, password = :contrasena, rol = :rol
-        WHERE email = :email');
-        //Parametros del usuario
-        $param = ['email' => $search_email,
-        'email_modificar' => $email, 
-        'contrasena' =>$contrasena, 
-        'rol' => $rol];
-        //Preparar la query de modificar
-        $stmt = $pdo->prepare($sql);
-        //Ejecuta la query de modificar
-        $stmt->execute($param);
+    //Comprueba si el email cambiado esta repetido
+ 
+        
+    try {
+        if(isset($_POST['modificar'])) {
+            //Query para modificar
+            $sql = ('UPDATE usuario 
+            set email = :email_modificar, password = :contrasena, rol = :rol
+            WHERE email = :email');
+            //Parametros del usuario
+            $param = ['email' => $email_comprobador,
+            'email_modificar' => $email, 
+            'contrasena' =>$contrasena, 
+            'rol' => $rol];
+            //Preparar la query de modificar
+            $stmt = $pdo->prepare($sql);
+            //Ejecuta la query de modificar
+            $stmt->execute($param);
+        }
 
+        if($rol == "Alumno" && $rol_comprobador != "Alumno"){
+            //Crea un alumno
+            $sql_alumno_insert = ('INSERT INTO alumno (email, nombre, alta, curso) 
+            VALUES (:email, :nombre, :alta, :curso)');
+            //Parametros
+            $param = ['email' => $email,
+            'nombre' => $nombre,
+            'alta' => $alta,
+            'curso' => $curso];
+            //Prepara la consulta
+            $stmt = $pdo->prepare($sql_alumno_insert);
+            //Ejecuta la consulta con los parametros
+            $stmt->execute($param);
+        } elseif ($rol != "Alumno" && $rol_comprobador == "Alumno") {
+            echo "hwiydiyhwiawauhihaiudw";
+            //SQL para eliminar el alumno, si cambias el rol
+            $sql_alumno_delete = ('DELETE FROM alumno
+            where email = :email');
+            //Ejecuta los parametros
+            $param = ['email' => $email];
+            //Preparala query
+            $stmt = $pdo->prepare();
+            //Ejecuta la query con los parametros
+            $stmt->execute($sql_alumno_delete);
+        }
         //Si es alumno tambien cambia los parametros de alumno
         if ($rol == "Alumno"){
             //Query para cambiar los valores del alumno
-            $sql_alumno = ('UPDATE alumno
+            $sql_alumno_update = ('UPDATE alumno
             set nombre = :nombre, alta = :alta, curso = :curso
             where email = :email');
             //Parametros del alumno
             $param = ['nombre' => $nombre,
             'alta' => $alta,
             'curso' => $curso,
-            'email' => $search_email];
+            'email' => $email_comprobador];
             //Prepara la query del alumno
-            $stmt = $pdo->prepare($sql_alumno);
+            $stmt = $pdo->prepare($sql_alumno_update);
             //Ejecuta la query del alumno
             $stmt->execute($param);
         }
-    }
 
-    $sql = ('SELECT * 
-    FROM usuario 
-    where email = :email');
-    //Parametro para el email
-    if ($email == null) {
-        $param = ['email' => $email_url];
-    } else {
-        $param = ['email' => $email];
-    }
-    //Prepara la query
-    $stmt = $pdo->prepare($sql);
-    //Ejecuta la query con los parametros
-    $stmt->execute($param);
-    //recoje la variable
-    $usuario = $stmt->fetch();
-    //Email que se puede cambiar
-    $email = $usuario['email'];
-    //Para que $email y $search_email se han iguales
-    if($search_email != $email) {
-        $search_email = $email;
-    }
-    //Variables que se peuden cambiar
-    $contrasena = $usuario['password'];
-    //Variable de rol 
-    $rol = $usuario['rol'];
-
-    //Si es alumno lo recoje
-    if($rol == "Alumno") {
-        //query para cojer la información del email del alumno
-        $sql_alumno = ('SELECT * from alumno where email = :email');
-        //Prepara la sql de alumno
-        $stmt = $pdo->prepare($sql_alumno);
-        //Ejecuta el sql de alumno
+        $sql = ('SELECT * 
+        FROM usuario 
+        where email = :email');
+        //Parametro para el email
+        if ($email == null) {
+            $param = ['email' => $email_url];
+        } else {
+            $param = ['email' => $email];
+        }
+        //Prepara la query
+        $stmt = $pdo->prepare($sql);
+        //Ejecuta la query con los parametros
         $stmt->execute($param);
-        //Recoje al usuario
-        $usuario_alumno = $stmt->fetch();
+        //recoje la variable
+        $usuario = $stmt->fetch();
+        //Email que se puede cambiar
+        $email = $usuario['email'];
+        //Para que $email y $email_comprobador se han iguales
+        if($email_comprobador != $email) {
+            $email_comprobador = $email;
+        }
+        //Variables que se peuden cambiar
+        $contrasena = $usuario['password'];
+        //Variable de rol 
+        $rol = $usuario['rol'];
 
-        //Agregar a las variables ls datos
-        $nombre = $usuario_alumno['nombre'];
-        $curso = $usuario_alumno['curso'];
-        $alta = $usuario_alumno['alta'];
+        //Si es alumno lo recoje
+        if($rol == "Alumno") {
+            //query para cojer la información del email del alumno
+            $sql_alumno = ('SELECT * from alumno where email = :email');
+            //Prepara la sql de alumno
+            $stmt = $pdo->prepare($sql_alumno);
+            //Ejecuta el sql de alumno
+            $stmt->execute($param);
+            //Recoje al usuario
+            $usuario_alumno = $stmt->fetch();
+
+            //Agregar a las variables ls datos
+            $nombre = $usuario_alumno['nombre'];
+            $curso = $usuario_alumno['curso'];
+            $alta = $usuario_alumno['alta'];
+        }
+    } catch (PDOException$i) {
+        $email = $email_comprobador;
+        $error_duplicado_email = "el email elegido ya esta utilizado";
     }
+        
+    //Comprueba si has cambiado el email
+    
 ?>
 
 <!DOCTYPE html>
@@ -148,7 +188,9 @@
 
             <form action="admin_usuarios_modificar.php?email=<?php echo $_GET['email']; ?>" method="POST" class="div_formulario">
 
-                <input type="email" name="email_modificado" value="<?php echo $search_email; ?>" hidden>
+                <input type="email" name="email_comprobador" value="<?php echo $email_comprobador; ?>" hidden>
+
+                <input type="text" name="rol_comprobador" value="<?php echo $rol_comprobador; ?>" hidden>
 
                 <div class="dos_div">
                     <div class="formulario_div">
@@ -165,6 +207,7 @@
                         <div class="div_input_crear">
                             <input type="email" name="email_new" value="<?php echo $email; ?>" class="input_crear" required>
                         </div>
+                        <p><?php echo $error_duplicado_email; ?></p>
                     </div>
                 </div>
                 
